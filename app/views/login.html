@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{# Template casca provisorio. O front sera desenvolvido depois. #}
+
+{% block titulo %}Entrar{% endblock %}
+
+{% block conteudo %}
+<p><a href="{{ url_for('produtos.catalogo') }}">Voltar ao catalogo</a></p>
+
+<h1>Entrar</h1>
+<form method="post">
+  <input type="hidden" name="next" value="{{ proximo or '' }}">
+  <label>Email
+    <input type="email" name="email">
+  </label>
+  <label>Senha
+    <input type="password" name="senha">
+  </label>
+  <button type="submit">Entrar</button>
+</form>
+<p>Nao tem conta? <a href="{{ url_for('auth.registro') }}">Criar conta</a></p>
+{% endblock %}
