@@ -9,6 +9,27 @@ def _criar_produto(nome, preco, disponivel=True):
     return p
 
 
+def _fluxo_pedido(client, forma="pix"):
+    # Percorre as etapas de entrega e pagamento ate finalizar o pedido.
+    client.post(
+        "/pedidos/entrega",
+        data={
+            "destinatario": "Fulano de Tal",
+            "endereco": "Rua das Flores",
+            "numero": "100",
+            "bairro": "Centro",
+            "cidade": "Belo Horizonte",
+            "cep": "30000-000",
+            "observacao": "",
+        },
+    )
+    return client.post(
+        "/pedidos/pagamento",
+        data={"forma_pagamento": forma},
+        follow_redirects=True,
+    )
+
+
 def test_app_sobe(app):
     assert app is not None
 
@@ -65,16 +86,20 @@ def test_carrinho_soma_itens(client, produto):
 def test_checkout_gera_pedido_e_limpa_carrinho(client, produto, usuario, login):
     login("cliente@exemplo.com", "senha123")
     client.post(f"/carrinho/adicionar/{produto.id}", data={"quantidade": 3})
-    client.post("/pedidos/finalizar", follow_redirects=True)
+    _fluxo_pedido(client, forma="pix")
 
     pedido = Pedido.query.filter_by(usuario_id=usuario.id).first()
     assert pedido is not None
+    assert pedido.status == "confirmado"
+    assert pedido.forma_pagamento == "pix"
+    assert pedido.cidade == "Belo Horizonte"
     assert len(pedido.itens) == 1
     assert pedido.itens[0].quantidade == 3
     # O preco do item guarda o valor do momento da compra.
     assert pedido.itens[0].preco_unitario == produto.preco
     with client.session_transaction() as sessao:
         assert "carrinho" not in sessao
+        assert "entrega" not in sessao
 
 
 def test_admin_cria_e_remove_produto(client, admin, login):
@@ -108,7 +133,7 @@ def test_checkout_ignora_item_indisponivel(client, usuario, login):
     indisponivel.disponivel = False
     db.session.commit()
 
-    client.post("/pedidos/finalizar", follow_redirects=True)
+    _fluxo_pedido(client)
 
     pedido = Pedido.query.filter_by(usuario_id=usuario.id).first()
     assert pedido is not None
@@ -124,7 +149,7 @@ def test_checkout_bloqueado_quando_tudo_indisponivel(client, usuario, login):
     produto.disponivel = False
     db.session.commit()
 
-    client.post("/pedidos/finalizar", follow_redirects=True)
+    _fluxo_pedido(client)
     assert Pedido.query.filter_by(usuario_id=usuario.id).first() is None
 
 
@@ -151,3 +176,57 @@ def test_login_ignora_next_externo(client, usuario):
     assert retorno.status_code == 302
     assert "/produtos" in retorno.headers["Location"]
     assert "evil.com" not in retorno.headers["Location"]
+
+
+def test_entrega_exige_carrinho_com_item(client, usuario, login):
+    login("cliente@exemplo.com", "senha123")
+    resposta = client.get("/pedidos/entrega")
+    assert resposta.status_code == 302
+    assert "/carrinho" in resposta.headers["Location"]
+
+
+def test_entrega_campo_vazio_nao_avanca(client, produto, usuario, login):
+    login("cliente@exemplo.com", "senha123")
+    client.post(f"/carrinho/adicionar/{produto.id}", data={"quantidade": 1})
+    client.post(
+        "/pedidos/entrega",
+        data={
+            "destinatario": "Fulano",
+            "endereco": "Rua A",
+            "numero": "10",
+            "bairro": "Centro",
+            "cidade": "",
+            "cep": "30000-000",
+        },
+    )
+    with client.session_transaction() as sessao:
+        assert "entrega" not in sessao
+
+
+def test_pagamento_sem_entrega_redireciona(client, produto, usuario, login):
+    login("cliente@exemplo.com", "senha123")
+    client.post(f"/carrinho/adicionar/{produto.id}", data={"quantidade": 1})
+    resposta = client.get("/pedidos/pagamento")
+    assert resposta.status_code == 302
+    assert "/pedidos/entrega" in resposta.headers["Location"]
+
+
+def test_forma_pagamento_invalida_recusada(client, produto, usuario, login):
+    login("cliente@exemplo.com", "senha123")
+    client.post(f"/carrinho/adicionar/{produto.id}", data={"quantidade": 1})
+    _fluxo_pedido(client, forma="cheque")
+    assert Pedido.query.filter_by(usuario_id=usuario.id).first() is None
+
+
+def test_confirmacao_somente_do_dono(client, produto, usuario, admin, login):
+    login("cliente@exemplo.com", "senha123")
+    client.post(f"/carrinho/adicionar/{produto.id}", data={"quantidade": 1})
+    _fluxo_pedido(client)
+    pedido = Pedido.query.filter_by(usuario_id=usuario.id).first()
+    assert pedido is not None
+
+    # Outro usuario nao enxerga a confirmacao de um pedido alheio.
+    client.post("/logout")
+    login("admin@exemplo.com", "admin123")
+    resposta = client.get(f"/pedidos/confirmacao/{pedido.id}")
+    assert resposta.status_code == 404
