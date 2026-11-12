@@ -10,6 +10,16 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+  {% with mensagens = get_flashed_messages() %}
+    {% if mensagens %}
+      <ul>
+        {% for mensagem in mensagens %}
+          <li>{{ mensagem }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
   {% block conteudo %}{% endblock %}
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
