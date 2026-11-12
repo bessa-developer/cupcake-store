@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{# Template casca provisorio. O front sera desenvolvido depois. #}
+
+{% block titulo %}Pedido confirmado{% endblock %}
+
+{% block conteudo %}
+<h1>Pedido confirmado</h1>
+<p>Pedido {{ pedido.id }} - {{ pedido.status }}</p>
+
+<h2>Entrega</h2>
+<p>{{ pedido.destinatario }}</p>
+<p>{{ pedido.endereco }}, {{ pedido.numero }} - {{ pedido.bairro }}</p>
+<p>{{ pedido.cidade }} - {{ pedido.cep }}</p>
+{% if pedido.observacao %}
+  <p>Observacao: {{ pedido.observacao }}</p>
+{% endif %}
+
+<h2>Pagamento</h2>
+<p>Forma: {{ pedido.forma_pagamento }}</p>
+
+<h2>Itens</h2>
+<ul>
+  {% for item in pedido.itens %}
+    <li>{{ item.quantidade }}x {{ item.produto.nome }} - R$ {{ item.preco_unitario }}</li>
+  {% endfor %}
+</ul>
+
+<p><a href="{{ url_for('pedidos.meus_pedidos') }}">Ver meus pedidos</a></p>
+<p><a href="{{ url_for('produtos.catalogo') }}">Voltar ao catalogo</a></p>
+{% endblock %}

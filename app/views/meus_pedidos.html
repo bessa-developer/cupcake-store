@@ -20,6 +20,12 @@
           </li>
         {% endfor %}
       </ul>
+      {% if pedido.endereco %}
+        <p>Entrega para {{ pedido.destinatario }}, {{ pedido.endereco }}, {{ pedido.numero }} - {{ pedido.bairro }}, {{ pedido.cidade }} - {{ pedido.cep }}</p>
+      {% endif %}
+      {% if pedido.forma_pagamento %}
+        <p>Pagamento: {{ pedido.forma_pagamento }}</p>
+      {% endif %}
     </div>
   {% endfor %}
 {% else %}
