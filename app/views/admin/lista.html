@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{# Template casca provisorio. O front sera desenvolvido depois. #}
+
+{% block titulo %}Admin - Produtos{% endblock %}
+
+{% block conteudo %}
+<p><a href="{{ url_for('produtos.catalogo') }}">Ver catalogo</a></p>
+
+<h1>Produtos</h1>
+<p><a href="{{ url_for('admin.novo') }}">Novo produto</a></p>
+
+{% if produtos %}
+  <ul>
+    {% for produto in produtos %}
+      <li>
+        {{ produto.nome }}
+        R$ {{ produto.preco }}
+        {{ "disponivel" if produto.disponivel else "indisponivel" }}
+        <a href="{{ url_for('admin.editar', produto_id=produto.id) }}">Editar</a>
+        <form action="{{ url_for('admin.remover', produto_id=produto.id) }}" method="post">
+          <button type="submit">Remover</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Nenhum produto cadastrado.</p>
+{% endif %}
+{% endblock %}
