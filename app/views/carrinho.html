@@ -28,9 +28,7 @@
 
   <p>Total: R$ {{ total }}</p>
 
-  <form action="{{ url_for('pedidos.finalizar') }}" method="post">
-    <button type="submit">Finalizar pedido</button>
-  </form>
+  <p><a href="{{ url_for('pedidos.entrega') }}">Finalizar pedido</a></p>
 {% else %}
   <p>Seu carrinho esta vazio.</p>
 {% endif %}

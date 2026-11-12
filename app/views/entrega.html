@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{# Template casca provisorio. O front sera desenvolvido depois. #}
+
+{% block titulo %}Entrega{% endblock %}
+
+{% block conteudo %}
+<p><a href="{{ url_for('carrinho.ver') }}">Voltar ao carrinho</a></p>
+
+<h1>Dados de entrega</h1>
+<form method="post">
+  <label>Destinatario
+    <input type="text" name="destinatario" value="{{ entrega.destinatario or '' }}">
+  </label>
+  <label>Endereco
+    <input type="text" name="endereco" value="{{ entrega.endereco or '' }}">
+  </label>
+  <label>Numero
+    <input type="text" name="numero" value="{{ entrega.numero or '' }}">
+  </label>
+  <label>Bairro
+    <input type="text" name="bairro" value="{{ entrega.bairro or '' }}">
+  </label>
+  <label>Cidade
+    <input type="text" name="cidade" value="{{ entrega.cidade or '' }}">
+  </label>
+  <label>CEP
+    <input type="text" name="cep" value="{{ entrega.cep or '' }}">
+  </label>
+  <label>Observacao
+    <textarea name="observacao">{{ entrega.observacao or '' }}</textarea>
+  </label>
+  <button type="submit">Ir para o pagamento</button>
+</form>
+{% endblock %}

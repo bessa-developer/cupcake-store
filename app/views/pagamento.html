@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{# Template casca provisorio. O front sera desenvolvido depois. #}
+
+{% block titulo %}Pagamento{% endblock %}
+
+{% block conteudo %}
+<p><a href="{{ url_for('pedidos.entrega') }}">Voltar para a entrega</a></p>
+
+<h1>Forma de pagamento</h1>
+<form method="post">
+  {% for forma in formas %}
+    <label>
+      <input type="radio" name="forma_pagamento" value="{{ forma }}" {{ "checked" if loop.first else "" }}>
+      {{ forma }}
+    </label>
+  {% endfor %}
+  <button type="submit">Confirmar pedido</button>
+</form>
+{% endblock %}
