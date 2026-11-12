@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{# Template casca provisorio. O front sera desenvolvido depois. #}
+
+{% block titulo %}{{ produto.nome }}{% endblock %}
+
+{% block conteudo %}
+<p><a href="{{ url_for('produtos.catalogo') }}">Voltar ao catalogo</a></p>
+
+<h1>{{ produto.nome }}</h1>
+<p>{{ produto.descricao }}</p>
+<p>R$ {{ produto.preco }}</p>
+
+<form action="{{ url_for('carrinho.adicionar', produto_id=produto.id) }}" method="post">
+  <label>Quantidade
+    <input type="number" name="quantidade" value="1" min="1">
+  </label>
+  <button type="submit">Adicionar ao carrinho</button>
+</form>
+{% endblock %}

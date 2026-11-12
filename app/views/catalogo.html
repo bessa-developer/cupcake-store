@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{# Template casca provisorio. O front sera desenvolvido depois. #}
+
+{% block titulo %}Catalogo{% endblock %}
+
+{% block conteudo %}
+<nav>
+  {% if usuario_atual %}
+    <span>Ola, {{ usuario_atual.nome }}</span>
+    <a href="{{ url_for('pedidos.meus_pedidos') }}">Meus pedidos</a>
+    {% if usuario_atual.is_admin %}
+      <a href="{{ url_for('admin.lista') }}">Admin</a>
+    {% endif %}
+    <form action="{{ url_for('auth.logout') }}" method="post">
+      <button type="submit">Sair</button>
+    </form>
+  {% else %}
+    <a href="{{ url_for('auth.login') }}">Entrar</a>
+    <a href="{{ url_for('auth.registro') }}">Criar conta</a>
+  {% endif %}
+  <a href="{{ url_for('carrinho.ver') }}">Carrinho</a>
+</nav>
+
+<h1>Cupcakes</h1>
+{% if produtos %}
+  <ul>
+    {% for produto in produtos %}
+      <li>
+        <a href="{{ url_for('produtos.detalhe', produto_id=produto.id) }}">{{ produto.nome }}</a>
+        R$ {{ produto.preco }}
+        <form action="{{ url_for('carrinho.adicionar', produto_id=produto.id) }}" method="post">
+          <button type="submit">Adicionar</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Nenhum cupcake disponivel no momento.</p>
+{% endif %}
+{% endblock %}
