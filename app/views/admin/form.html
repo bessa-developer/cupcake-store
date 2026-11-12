@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{# Template casca provisorio. O front sera desenvolvido depois. #}
+
+{% block titulo %}{{ "Editar produto" if produto else "Novo produto" }}{% endblock %}
+
+{% block conteudo %}
+<p><a href="{{ url_for('admin.lista') }}">Voltar</a></p>
+
+<h1>{{ "Editar produto" if produto else "Novo produto" }}</h1>
+
+{% set acao = url_for('admin.editar', produto_id=produto.id) if produto else url_for('admin.novo') %}
+<form action="{{ acao }}" method="post">
+  <label>Nome
+    <input type="text" name="nome" value="{{ produto.nome if produto else '' }}">
+  </label>
+  <label>Descricao
+    <textarea name="descricao">{{ produto.descricao if produto else '' }}</textarea>
+  </label>
+  <label>Preco
+    <input type="text" name="preco" value="{{ produto.preco if produto else '' }}">
+  </label>
+  <label>Imagem
+    <input type="text" name="imagem" value="{{ produto.imagem if produto else '' }}">
+  </label>
+  <label>
+    <input type="checkbox" name="disponivel" {{ "checked" if (produto is none or produto.disponivel) else "" }}>
+    Disponivel
+  </label>
+  <button type="submit">Salvar</button>
+</form>
+{% endblock %}
