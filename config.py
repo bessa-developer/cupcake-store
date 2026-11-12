@@ -27,3 +27,10 @@ class Config:
     # em memoria, que mantem o app e os testes rodando antes de ligar o banco.
     SQLALCHEMY_DATABASE_URI = _normalizar_url(os.getenv("DATABASE_URL")) or "sqlite://"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
+class TestConfig(Config):
+    # Forca um SQLite em memoria para os testes nunca tocarem no banco do Neon.
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = "sqlite://"
+    SECRET_KEY = "chave-de-teste"
