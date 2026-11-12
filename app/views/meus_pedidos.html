@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{# Template casca provisorio. O front sera desenvolvido depois. #}
+
+{% block titulo %}Meus pedidos{% endblock %}
+
+{% block conteudo %}
+<p><a href="{{ url_for('produtos.catalogo') }}">Voltar ao catalogo</a></p>
+
+<h1>Meus pedidos</h1>
+{% if pedidos %}
+  {% for pedido in pedidos %}
+    <div>
+      <p>Pedido {{ pedido.id }} - {{ pedido.status }} - {{ pedido.criado_em.strftime('%d/%m/%Y %H:%M') }}</p>
+      <ul>
+        {% for item in pedido.itens %}
+          <li>
+            {{ item.quantidade }}x {{ item.produto.nome }}
+            R$ {{ item.preco_unitario }}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>Voce ainda nao fez pedidos.</p>
+{% endif %}
+{% endblock %}

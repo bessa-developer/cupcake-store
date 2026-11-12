@@ -1,6 +1,11 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.extensions import db
+
+
+def agora_utc():
+    # Data e hora atual em UTC, sem tzinfo, para casar com a coluna DateTime.
+    return datetime.now(timezone.utc).replace(tzinfo=None)
 
 
 class Pedido(db.Model):
@@ -9,7 +14,7 @@ class Pedido(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     usuario_id = db.Column(db.Integer, db.ForeignKey("usuarios.id"), nullable=False)
     status = db.Column(db.String(30), default="aberto", nullable=False)
-    criado_em = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    criado_em = db.Column(db.DateTime, default=agora_utc, nullable=False)
 
     # Um pedido reune varios itens; apagar o pedido apaga seus itens.
     itens = db.relationship("ItemPedido", backref="pedido", cascade="all, delete-orphan")
