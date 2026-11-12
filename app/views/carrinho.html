@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{# Template casca provisorio. O front sera desenvolvido depois. #}
+
+{% block titulo %}Carrinho{% endblock %}
+
+{% block conteudo %}
+<p><a href="{{ url_for('produtos.catalogo') }}">Continuar comprando</a></p>
+
+<h1>Carrinho</h1>
+{% if itens %}
+  <ul>
+    {% for item in itens %}
+      <li>
+        {{ item.produto.nome }}
+        R$ {{ item.produto.preco }}
+        <form action="{{ url_for('carrinho.atualizar', produto_id=item.produto.id) }}" method="post">
+          <input type="number" name="quantidade" value="{{ item.quantidade }}" min="0">
+          <button type="submit">Atualizar</button>
+        </form>
+        Subtotal: R$ {{ item.subtotal }}
+        <form action="{{ url_for('carrinho.remover', produto_id=item.produto.id) }}" method="post">
+          <button type="submit">Remover</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <p>Total: R$ {{ total }}</p>
+
+  <form action="{{ url_for('pedidos.finalizar') }}" method="post">
+    <button type="submit">Finalizar pedido</button>
+  </form>
+{% else %}
+  <p>Seu carrinho esta vazio.</p>
+{% endif %}
+{% endblock %}
