@@ -1,22 +1,37 @@
 {% extends "base.html" %}
+{% set ativo = "login" %}
 
-{# Template casca provisorio. O front sera desenvolvido depois. #}
-
-{% block titulo %}Entrar{% endblock %}
+{% block titulo %}Entrar · Dona Baunilha{% endblock %}
 
 {% block conteudo %}
-<p><a href="{{ url_for('produtos.catalogo') }}">Voltar ao catalogo</a></p>
+  <div class="form-estreito">
+    <div class="pagina-topo" style="text-align:center;">
+      <h1>Que bom te ver</h1>
+      <p style="margin:0 auto;">Entre na sua conta para continuar.</p>
+    </div>
 
-<h1>Entrar</h1>
-<form method="post">
-  <input type="hidden" name="next" value="{{ proximo or '' }}">
-  <label>Email
-    <input type="email" name="email">
-  </label>
-  <label>Senha
-    <input type="password" name="senha">
-  </label>
-  <button type="submit">Entrar</button>
-</form>
-<p>Nao tem conta? <a href="{{ url_for('auth.registro') }}">Criar conta</a></p>
+    <form action="{{ url_for('auth.login') }}" method="post" class="form-cartao">
+      <input type="hidden" name="next" value="{{ proximo or '' }}">
+
+      <div class="campo">
+        <label for="email">Email</label>
+        <input class="entrada" type="email" id="email" name="email" required autocomplete="email"
+               value="{{ email or '' }}" placeholder="voce@email.com" autofocus>
+      </div>
+
+      <div class="campo">
+        <label for="senha">Senha</label>
+        <input class="entrada" type="password" id="senha" name="senha" required autocomplete="current-password"
+               placeholder="Sua senha">
+      </div>
+
+      <div class="form-acoes">
+        <button type="submit" class="botao botao-primario botao-largo botao-grande">Entrar</button>
+      </div>
+
+      <p class="form-rodape-texto">
+        Ainda não tem conta? <a href="{{ url_for('auth.registro') }}">Criar agora</a>
+      </p>
+    </form>
+  </div>
 {% endblock %}

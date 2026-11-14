@@ -1,20 +1,54 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% set ativo = "catalogo" %}
 
-{# Template casca provisorio. O front sera desenvolvido depois. #}
-
-{% block titulo %}{{ produto.nome }}{% endblock %}
+{% block titulo %}{{ produto.nome }} · Dona Baunilha{% endblock %}
 
 {% block conteudo %}
-<p><a href="{{ url_for('produtos.catalogo') }}">Voltar ao catalogo</a></p>
+  <nav class="migalha" aria-label="Você está em">
+    <a href="{{ url_for('produtos.catalogo') }}">Cupcakes</a>
+    <span aria-hidden="true">›</span>
+    <span>{{ produto.nome }}</span>
+  </nav>
 
-<h1>{{ produto.nome }}</h1>
-<p>{{ produto.descricao }}</p>
-<p>R$ {{ produto.preco }}</p>
+  <div class="detalhe">
+    <div class="detalhe-foto">
+      <img src="{{ m.foto_produto(produto) }}" alt="{{ produto.nome }}">
+    </div>
 
-<form action="{{ url_for('carrinho.adicionar', produto_id=produto.id) }}" method="post">
-  <label>Quantidade
-    <input type="number" name="quantidade" value="1" min="1">
-  </label>
-  <button type="submit">Adicionar ao carrinho</button>
-</form>
+    <div class="detalhe-info">
+      {% if produto.disponivel %}
+        <span class="selo-estado selo-disponivel">Fresquinho, saiu hoje</span>
+      {% else %}
+        <span class="selo-estado selo-esgotado">Esgotado por hoje</span>
+      {% endif %}
+
+      <h1>{{ produto.nome }}</h1>
+      <div class="detalhe-preco preco">{{ m.preco(produto.preco) }}</div>
+      <p class="detalhe-desc">{{ produto.descricao }}</p>
+
+      {% if produto.disponivel %}
+        <form action="{{ url_for('carrinho.adicionar', produto_id=produto.id) }}" method="post" class="detalhe-compra" data-quantidade>
+          <div class="qtd-campo">
+            <label for="quantidade">Quantas unidades</label>
+            <div class="contador">
+              <button type="button" class="menos" aria-label="Diminuir quantidade">−</button>
+              <input type="number" id="quantidade" name="quantidade" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantidade">
+              <button type="button" class="mais" aria-label="Aumentar quantidade">+</button>
+            </div>
+          </div>
+          <button type="submit" class="botao botao-primario botao-grande">Adicionar ao carrinho</button>
+        </form>
+      {% else %}
+        <div class="detalhe-compra">
+          <p style="margin:0;color:var(--cacau-suave);">Esse já foi todo por hoje. Amanhã tem mais, feito na hora.</p>
+          <a href="{{ url_for('produtos.catalogo') }}" class="botao botao-secundario">Ver outros cupcakes</a>
+        </div>
+      {% endif %}
+
+      <p style="margin-top:22px;">
+        <a href="{{ url_for('produtos.catalogo') }}">Voltar para a vitrine</a>
+      </p>
+    </div>
+  </div>
 {% endblock %}

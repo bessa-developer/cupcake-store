@@ -1,30 +1,70 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% set ativo = "admin" %}
 
-{# Template casca provisorio. O front sera desenvolvido depois. #}
-
-{% block titulo %}Admin - Produtos{% endblock %}
+{% block titulo %}Admin · Dona Baunilha{% endblock %}
 
 {% block conteudo %}
-<p><a href="{{ url_for('produtos.catalogo') }}">Ver catalogo</a></p>
+  <div class="admin-barra">
+    <div>
+      <h1>Cupcakes da loja</h1>
+      <p style="margin:4px 0 0;color:var(--cacau-suave);">Tudo o que está na vitrine, disponível ou não.</p>
+    </div>
+    <a href="{{ url_for('admin.novo') }}" class="botao botao-primario">Novo cupcake</a>
+  </div>
 
-<h1>Produtos</h1>
-<p><a href="{{ url_for('admin.novo') }}">Novo produto</a></p>
-
-{% if produtos %}
-  <ul>
-    {% for produto in produtos %}
-      <li>
-        {{ produto.nome }}
-        R$ {{ produto.preco }}
-        {{ "disponivel" if produto.disponivel else "indisponivel" }}
-        <a href="{{ url_for('admin.editar', produto_id=produto.id) }}">Editar</a>
-        <form action="{{ url_for('admin.remover', produto_id=produto.id) }}" method="post">
-          <button type="submit">Remover</button>
-        </form>
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>Nenhum produto cadastrado.</p>
-{% endif %}
+  {% if produtos %}
+    <div class="tabela-envolve">
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th class="col-foto">Foto</th>
+            <th>Cupcake</th>
+            <th>Preço</th>
+            <th>Situação</th>
+            <th style="text-align:right;">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for produto in produtos %}
+            <tr>
+              <td class="col-foto" data-rotulo="Foto">
+                <img class="admin-miniatura" src="{{ m.foto_produto(produto) }}" alt="{{ produto.nome }}">
+              </td>
+              <td data-rotulo="Cupcake">
+                <span class="admin-nome">
+                  {{ produto.nome }}
+                  <span class="sub">{{ produto.descricao|truncate(60) }}</span>
+                </span>
+              </td>
+              <td data-rotulo="Preço"><span class="preco">{{ m.preco(produto.preco) }}</span></td>
+              <td data-rotulo="Situação">
+                {% if produto.disponivel %}
+                  <span class="selo-estado selo-disponivel">Disponível</span>
+                {% else %}
+                  <span class="selo-estado selo-esgotado">Fora da vitrine</span>
+                {% endif %}
+              </td>
+              <td data-rotulo="Ações">
+                <div class="acoes">
+                  <a href="{{ url_for('admin.editar', produto_id=produto.id) }}" class="acao-icone">Editar</a>
+                  <form action="{{ url_for('admin.remover', produto_id=produto.id) }}" method="post"
+                        data-confirmar="Remover {{ produto.nome }} da loja?">
+                    <button type="submit" class="acao-icone acao-remover">Remover</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="vazio">
+      <div class="emblema" aria-hidden="true">{{ m.icone('cupcake', 46) }}</div>
+      <h2>Nenhum cupcake cadastrado</h2>
+      <p>Comece adicionando o primeiro sabor da vitrine. Depois é só manter a vitrine girando.</p>
+      <a href="{{ url_for('admin.novo') }}" class="botao botao-primario botao-grande">Cadastrar o primeiro</a>
+    </div>
+  {% endif %}
 {% endblock %}

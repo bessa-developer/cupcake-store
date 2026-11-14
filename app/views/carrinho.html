@@ -1,35 +1,77 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% set ativo = "carrinho" %}
 
-{# Template casca provisorio. O front sera desenvolvido depois. #}
-
-{% block titulo %}Carrinho{% endblock %}
+{% block titulo %}Carrinho · Dona Baunilha{% endblock %}
 
 {% block conteudo %}
-<p><a href="{{ url_for('produtos.catalogo') }}">Continuar comprando</a></p>
+  <div class="pagina-topo">
+    <h1>Seu carrinho</h1>
+  </div>
 
-<h1>Carrinho</h1>
-{% if itens %}
-  <ul>
-    {% for item in itens %}
-      <li>
-        {{ item.produto.nome }}
-        R$ {{ item.produto.preco }}
-        <form action="{{ url_for('carrinho.atualizar', produto_id=item.produto.id) }}" method="post">
-          <input type="number" name="quantidade" value="{{ item.quantidade }}" min="0">
-          <button type="submit">Atualizar</button>
-        </form>
-        Subtotal: R$ {{ item.subtotal }}
-        <form action="{{ url_for('carrinho.remover', produto_id=item.produto.id) }}" method="post">
-          <button type="submit">Remover</button>
-        </form>
-      </li>
-    {% endfor %}
-  </ul>
+  {% if itens %}
+    <div class="carrinho-grade">
+      <div class="carrinho-itens">
+        {% for item in itens %}
+          <div class="carrinho-item">
+            <div class="carrinho-item-foto">
+              <a href="{{ url_for('produtos.detalhe', produto_id=item.produto.id) }}">
+                <img src="{{ m.foto_produto(item.produto) }}" alt="{{ item.produto.nome }}">
+              </a>
+            </div>
 
-  <p>Total: R$ {{ total }}</p>
+            <div class="carrinho-item-info">
+              <h3><a href="{{ url_for('produtos.detalhe', produto_id=item.produto.id) }}">{{ item.produto.nome }}</a></h3>
+              <div class="carrinho-item-preco-unit">{{ m.preco(item.produto.preco) }} cada</div>
 
-  <p><a href="{{ url_for('pedidos.entrega') }}">Finalizar pedido</a></p>
-{% else %}
-  <p>Seu carrinho esta vazio.</p>
-{% endif %}
+              <div class="carrinho-item-controles">
+                <form action="{{ url_for('carrinho.atualizar', produto_id=item.produto.id) }}" method="post" data-quantidade data-enviar-ao-mudar>
+                  <div class="contador contador-mini">
+                    <button type="button" class="menos" aria-label="Diminuir quantidade">−</button>
+                    <input type="number" name="quantidade" value="{{ item.quantidade }}" min="1" max="99" inputmode="numeric" aria-label="Quantidade de {{ item.produto.nome }}">
+                    <button type="button" class="mais" aria-label="Aumentar quantidade">+</button>
+                  </div>
+                  <button type="submit" class="botao botao-fantasma sem-js" style="padding:9px 12px;">Atualizar</button>
+                </form>
+
+                <form action="{{ url_for('carrinho.remover', produto_id=item.produto.id) }}" method="post">
+                  <button type="submit" class="link-remover">Remover</button>
+                </form>
+              </div>
+            </div>
+
+            <div class="carrinho-item-direita">
+              <div class="carrinho-item-subtotal preco">{{ m.preco(item.subtotal) }}</div>
+            </div>
+          </div>
+        {% endfor %}
+
+        <p style="margin-top:4px;">
+          <a href="{{ url_for('produtos.catalogo') }}">Continuar escolhendo cupcakes</a>
+        </p>
+      </div>
+
+      <aside class="resumo" aria-label="Resumo do pedido">
+        <h2>Resumo</h2>
+        <div class="resumo-linha">
+          <span>{{ itens|length }} {{ 'item' if itens|length == 1 else 'itens' }} no carrinho</span>
+        </div>
+        <div class="resumo-total">
+          <span>Total</span>
+          <span class="total-valor">{{ m.preco(total) }}</span>
+        </div>
+        <a href="{{ url_for('pedidos.entrega') }}" class="botao botao-primario botao-largo botao-grande">Finalizar pedido</a>
+        <div class="continuar">
+          <a href="{{ url_for('produtos.catalogo') }}">Ainda quero ver mais</a>
+        </div>
+      </aside>
+    </div>
+  {% else %}
+    <div class="vazio">
+      <div class="emblema" aria-hidden="true">{{ m.icone('carrinho', 46) }}</div>
+      <h2>Seu carrinho ainda está vazio</h2>
+      <p>Que tal começar por um clássico de baunilha? A vitrine está cheia de opções saídas do forno.</p>
+      <a href="{{ url_for('produtos.catalogo') }}" class="botao botao-primario botao-grande">Escolher cupcakes</a>
+    </div>
+  {% endif %}
 {% endblock %}

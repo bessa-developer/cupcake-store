@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% set ativo = "" %}
+
+{% block titulo %}Página não encontrada · Dona Baunilha{% endblock %}
+
+{% block conteudo %}
+  <div class="erro-404">
+    <div class="numero">404</div>
+    <h1>Essa fornada a gente não achou</h1>
+    <p>A página que você procurou saiu da vitrine ou nunca esteve aqui. Mas tem cupcake fresco esperando na página inicial.</p>
+    <div class="form-acoes" style="justify-content:center;">
+      <a href="{{ url_for('produtos.catalogo') }}" class="botao botao-primario botao-grande">Voltar para a vitrine</a>
+    </div>
+  </div>
+{% endblock %}

@@ -1,34 +1,73 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% set ativo = "pedidos" %}
 
-{# Template casca provisorio. O front sera desenvolvido depois. #}
-
-{% block titulo %}Meus pedidos{% endblock %}
+{% block titulo %}Meus pedidos · Dona Baunilha{% endblock %}
 
 {% block conteudo %}
-<p><a href="{{ url_for('produtos.catalogo') }}">Voltar ao catalogo</a></p>
+  <div class="pagina-topo">
+    <h1>Meus pedidos</h1>
+    {% if pedidos %}<p>Tudo o que você já pediu na Dona Baunilha fica guardado aqui.</p>{% endif %}
+  </div>
 
-<h1>Meus pedidos</h1>
-{% if pedidos %}
-  {% for pedido in pedidos %}
-    <div>
-      <p>Pedido {{ pedido.id }} - {{ pedido.status }} - {{ pedido.criado_em.strftime('%d/%m/%Y %H:%M') }}</p>
-      <ul>
-        {% for item in pedido.itens %}
-          <li>
-            {{ item.quantidade }}x {{ item.produto.nome }}
-            R$ {{ item.preco_unitario }}
-          </li>
-        {% endfor %}
-      </ul>
-      {% if pedido.endereco %}
-        <p>Entrega para {{ pedido.destinatario }}, {{ pedido.endereco }}, {{ pedido.numero }} - {{ pedido.bairro }}, {{ pedido.cidade }} - {{ pedido.cep }}</p>
-      {% endif %}
-      {% if pedido.forma_pagamento %}
-        <p>Pagamento: {{ pedido.forma_pagamento }}</p>
-      {% endif %}
+  {% if pedidos %}
+    <div class="pedidos-lista">
+      {% for pedido in pedidos %}
+        <article class="pedido-cartao">
+          <div class="pedido-cabeca">
+            <span class="pedido-numero">Pedido nº <span class="num">{{ pedido.id }}</span></span>
+            {% if pedido.criado_em %}
+              <span class="pedido-data">
+                {{ pedido.criado_em.strftime('%d/%m/%Y') if pedido.criado_em.strftime is defined else pedido.criado_em }}
+              </span>
+            {% endif %}
+            <div class="pedido-cabeca-dir">
+              {{ m.status_selo(pedido.status) }}
+            </div>
+          </div>
+
+          <div class="pedido-corpo">
+            <div class="pedido-meta">
+              <div class="endereco-curto">
+                <div class="mini-rotulo">Entrega</div>
+                <div>{{ pedido.destinatario }} · {{ pedido.endereco }}, {{ pedido.numero }} · {{ pedido.bairro }}, {{ pedido.cidade }}</div>
+              </div>
+              <div>
+                <div class="mini-rotulo">Pagamento</div>
+                <div>{{ m.forma_icone(pedido.forma_pagamento) }} {{ m.forma_nome(pedido.forma_pagamento) }}</div>
+              </div>
+            </div>
+
+            <div class="itens-pedido">
+              {% set ns = namespace(total=0) %}
+              {% for item in pedido.itens %}
+                {% set linha = item.quantidade * item.preco_unitario %}
+                {% set ns.total = ns.total + linha %}
+                <div class="item-pedido">
+                  <div class="item-pedido-nome">
+                    {{ item.produto.nome if item.produto.nome is defined else item.produto }}
+                    <span class="mult">× <span class="num">{{ item.quantidade }}</span></span>
+                  </div>
+                  <div class="item-pedido-unit">{{ m.preco(item.preco_unitario) }} cada</div>
+                  <div class="item-pedido-total preco">{{ m.preco(linha) }}</div>
+                </div>
+              {% endfor %}
+            </div>
+
+            <div class="pedido-total-geral">
+              <span>Total do pedido</span>
+              <span class="total-valor">{{ m.preco(ns.total) }}</span>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
     </div>
-  {% endfor %}
-{% else %}
-  <p>Voce ainda nao fez pedidos.</p>
-{% endif %}
+  {% else %}
+    <div class="vazio">
+      <div class="emblema" aria-hidden="true">{{ m.icone('cupcake', 46) }}</div>
+      <h2>Você ainda não fez nenhum pedido</h2>
+      <p>Quando pedir seus primeiros cupcakes, eles aparecem aqui com todos os detalhes.</p>
+      <a href="{{ url_for('produtos.catalogo') }}" class="botao botao-primario botao-grande">Ver os cupcakes</a>
+    </div>
+  {% endif %}
 {% endblock %}

@@ -1,20 +1,48 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% set ativo = "carrinho" %}
 
-{# Template casca provisorio. O front sera desenvolvido depois. #}
+{% block titulo %}Pagamento · Dona Baunilha{% endblock %}
 
-{% block titulo %}Pagamento{% endblock %}
+{% set rotulos = {
+  'cartao': {'titulo': 'Cartão', 'sub': 'Crédito ou débito na entrega'},
+  'pix':    {'titulo': 'Pix', 'sub': 'Aquele pagamento na hora'},
+  'boleto': {'titulo': 'Boleto', 'sub': 'Vence em três dias úteis'}
+} %}
 
 {% block conteudo %}
-<p><a href="{{ url_for('pedidos.entrega') }}">Voltar para a entrega</a></p>
+  {{ m.passos(2) }}
 
-<h1>Forma de pagamento</h1>
-<form method="post">
-  {% for forma in formas %}
-    <label>
-      <input type="radio" name="forma_pagamento" value="{{ forma }}" {{ "checked" if loop.first else "" }}>
-      {{ forma }}
-    </label>
-  {% endfor %}
-  <button type="submit">Confirmar pedido</button>
-</form>
+  <div class="form-medio">
+    <div class="pagina-topo" style="text-align:center;">
+      <h1>Como você prefere pagar</h1>
+      <p style="margin:0 auto;">É só escolher uma forma. Esse é um pedido de simulação, então nada será cobrado de verdade.</p>
+    </div>
+
+    <form action="{{ url_for('pedidos.pagamento') }}" method="post" class="form-cartao">
+      <fieldset style="border:none;padding:0;margin:0 0 8px;">
+        <legend class="campo" style="font-weight:500;padding:0;margin-bottom:14px;">Formas de pagamento</legend>
+
+        <div class="formas">
+          {% for forma in formas %}
+            {% set info = rotulos.get(forma, {'titulo': forma|capitalize, 'sub': ''}) %}
+            <label class="forma">
+              <input type="radio" name="forma_pagamento" value="{{ forma }}" {{ 'checked' if loop.first }} required>
+              <span class="marca-radio" aria-hidden="true"></span>
+              <span class="icone-forma" aria-hidden="true">{{ m.forma_icone(forma, 24) }}</span>
+              <span class="forma-texto">
+                <strong>{{ info.titulo }}</strong>
+                {% if info.sub %}<span>{{ info.sub }}</span>{% endif %}
+              </span>
+            </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+
+      <div class="form-acoes">
+        <button type="submit" class="botao botao-primario botao-grande">Confirmar pedido</button>
+        <a href="{{ url_for('pedidos.entrega') }}" class="botao botao-fantasma">Voltar para a entrega</a>
+      </div>
+    </form>
+  </div>
 {% endblock %}
