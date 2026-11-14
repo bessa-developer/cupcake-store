@@ -67,3 +67,24 @@ R$ {{ "%.2f"|format(valor)|replace(".", ",") }}
   {% endfor %}
 </ol>
 {%- endmacro %}
+
+{# Itens de um pedido com o preço gravado na compra e o total. Usado na
+   confirmação e em Meus pedidos. #}
+{% macro itens_do_pedido(pedido, rotulo_total) -%}
+<div class="itens-pedido">
+  {% for item in pedido.itens %}
+    <div class="item-pedido">
+      <div class="item-pedido-nome">
+        {{ item.produto.nome }}
+        <span class="mult">× <span class="num">{{ item.quantidade }}</span></span>
+      </div>
+      <div class="item-pedido-unit">{{ preco(item.preco_unitario) }} cada</div>
+      <div class="item-pedido-total preco">{{ preco(item.subtotal) }}</div>
+    </div>
+  {% endfor %}
+</div>
+<div class="pedido-total-geral">
+  <span>{{ rotulo_total }}</span>
+  <span class="total-valor">{{ preco(pedido.total) }}</span>
+</div>
+{%- endmacro %}

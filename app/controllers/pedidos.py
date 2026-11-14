@@ -97,7 +97,6 @@ def _finalizar(forma):
     entrega = session.get("entrega", {})
     pedido = Pedido(
         usuario_id=usuario_atual().id,
-        status="confirmado",
         forma_pagamento=forma,
         destinatario=entrega.get("destinatario"),
         endereco=entrega.get("endereco"),

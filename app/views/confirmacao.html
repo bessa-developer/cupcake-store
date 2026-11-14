@@ -67,25 +67,7 @@
 
     <div class="painel">
       <h2><span class="ponto" aria-hidden="true"></span> Seus cupcakes</h2>
-      <div class="itens-pedido">
-        {% set ns = namespace(total=0) %}
-        {% for item in pedido.itens %}
-          {% set linha = item.quantidade * item.preco_unitario %}
-          {% set ns.total = ns.total + linha %}
-          <div class="item-pedido">
-            <div class="item-pedido-nome">
-              {{ item.produto.nome if item.produto.nome is defined else item.produto }}
-              <span class="mult">× <span class="num">{{ item.quantidade }}</span></span>
-            </div>
-            <div class="item-pedido-unit">{{ m.preco(item.preco_unitario) }} cada</div>
-            <div class="item-pedido-total preco">{{ m.preco(linha) }}</div>
-          </div>
-        {% endfor %}
-      </div>
-      <div class="pedido-total-geral">
-        <span>Total</span>
-        <span class="total-valor">{{ m.preco(ns.total) }}</span>
-      </div>
+      {{ m.itens_do_pedido(pedido, "Total") }}
     </div>
 
     <div class="form-acoes" style="justify-content:center;">

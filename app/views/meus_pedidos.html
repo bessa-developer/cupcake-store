@@ -16,11 +16,7 @@
         <article class="pedido-cartao">
           <div class="pedido-cabeca">
             <span class="pedido-numero">Pedido nº <span class="num">{{ pedido.id }}</span></span>
-            {% if pedido.criado_em %}
-              <span class="pedido-data">
-                {{ pedido.criado_em.strftime('%d/%m/%Y') if pedido.criado_em.strftime is defined else pedido.criado_em }}
-              </span>
-            {% endif %}
+            <span class="pedido-data">{{ pedido.criado_em.strftime('%d/%m/%Y') }}</span>
             <div class="pedido-cabeca-dir">
               {{ m.status_selo(pedido.status) }}
             </div>
@@ -38,26 +34,7 @@
               </div>
             </div>
 
-            <div class="itens-pedido">
-              {% set ns = namespace(total=0) %}
-              {% for item in pedido.itens %}
-                {% set linha = item.quantidade * item.preco_unitario %}
-                {% set ns.total = ns.total + linha %}
-                <div class="item-pedido">
-                  <div class="item-pedido-nome">
-                    {{ item.produto.nome if item.produto.nome is defined else item.produto }}
-                    <span class="mult">× <span class="num">{{ item.quantidade }}</span></span>
-                  </div>
-                  <div class="item-pedido-unit">{{ m.preco(item.preco_unitario) }} cada</div>
-                  <div class="item-pedido-total preco">{{ m.preco(linha) }}</div>
-                </div>
-              {% endfor %}
-            </div>
-
-            <div class="pedido-total-geral">
-              <span>Total do pedido</span>
-              <span class="total-valor">{{ m.preco(ns.total) }}</span>
-            </div>
+            {{ m.itens_do_pedido(pedido, "Total do pedido") }}
           </div>
         </article>
       {% endfor %}
