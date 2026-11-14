@@ -230,3 +230,31 @@ def test_confirmacao_somente_do_dono(client, produto, usuario, admin, login):
     login("admin@exemplo.com", "admin123")
     resposta = client.get(f"/pedidos/confirmacao/{pedido.id}")
     assert resposta.status_code == 404
+
+
+def test_admin_edita_produto(client, admin, produto, login):
+    login("admin@exemplo.com", "admin123")
+    client.post(
+        f"/admin/{produto.id}/editar",
+        data={"nome": "Baunilha especial", "descricao": "Nova receita", "preco": "9,90"},
+    )
+    db.session.refresh(produto)
+    assert produto.nome == "Baunilha especial"
+    assert produto.descricao == "Nova receita"
+    assert str(produto.preco) == "9.90"
+    # Sem marcar a caixa, o produto sai da vitrine.
+    assert produto.disponivel is False
+
+
+def test_carrinho_atualiza_quantidade(client, produto):
+    client.post(f"/carrinho/adicionar/{produto.id}", data={"quantidade": 1})
+    client.post(f"/carrinho/atualizar/{produto.id}", data={"quantidade": 5})
+    with client.session_transaction() as sessao:
+        assert sessao["carrinho"] == {str(produto.id): 5}
+
+
+def test_carrinho_remove_item(client, produto):
+    client.post(f"/carrinho/adicionar/{produto.id}", data={"quantidade": 2})
+    client.post(f"/carrinho/remover/{produto.id}")
+    with client.session_transaction() as sessao:
+        assert str(produto.id) not in sessao["carrinho"]
