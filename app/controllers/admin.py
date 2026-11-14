@@ -37,7 +37,7 @@ def _erro_no_formulario(dados):
 @admin_bp.route("/")
 @admin_required
 def lista():
-    # O admin enxerga todos os produtos, disponiveis ou nao.
+    # O admin enxerga todos os produtos, disponíveis ou não.
     produtos = Produto.query.order_by(Produto.nome).all()
     return render_template("admin/lista.html", produtos=produtos)
 

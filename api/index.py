@@ -1,8 +1,8 @@
 import os
 import sys
 
-# A Vercel executa este arquivo de dentro da pasta api/; adiciona a raiz
-# do projeto ao path para encontrar o pacote da aplicacao.
+# A Vercel executa este arquivo de dentro da pasta api/, então a raiz
+# do projeto entra no path para o pacote da aplicação ser encontrado.
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app import create_app

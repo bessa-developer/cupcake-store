@@ -10,7 +10,7 @@ from app.extensions import db, csrf
 
 
 def create_app(config_class=Config):
-    # Cria a aplicacao e carrega as configuracoes a partir do config.py.
+    # Cria a aplicação e carrega as configurações a partir do config.py.
     app = Flask(
         __name__,
         template_folder="views",
@@ -19,7 +19,7 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
     _validar_ambiente(app)
 
-    # Liga o banco a aplicacao.
+    # Liga o banco à aplicação.
     db.init_app(app)
     csrf.init_app(app)
 
@@ -41,18 +41,18 @@ def create_app(config_class=Config):
     app.register_blueprint(auth_bp)
     app.register_blueprint(admin_bp)
 
-    # Deixa o usuario logado disponivel nos templates.
+    # Deixa o usuário logado disponível nos templates.
     from app.servicos.autenticacao import registrar_contexto
     registrar_contexto(app)
 
-    # Contador de itens do carrinho, usado no topo de todas as paginas.
+    # Contador de itens do carrinho, usado no topo de todas as páginas.
     from app.servicos import carrinho_sessao
 
     @app.context_processor
     def injetar_contador():
         return {"total_itens_carrinho": carrinho_sessao.quantidade_total()}
 
-    # Pagina de erro 404 no estilo da loja.
+    # Página de erro 404 no estilo da loja.
     @app.errorhandler(404)
     def pagina_nao_encontrada(erro):
         return render_template("404.html"), 404
@@ -90,7 +90,7 @@ def _validar_ambiente(app):
 
 
 def registrar_comandos(app):
-    # Comando de linha para criar um administrador sem senha fixa no codigo.
+    # Comando de linha para criar um administrador sem senha fixa no código.
     from app.models import Usuario
 
     @app.cli.command("criar-admin")
@@ -100,7 +100,7 @@ def registrar_comandos(app):
     def criar_admin(nome, email, senha):
         email = email.strip().lower()
         if Usuario.query.filter_by(email=email).first():
-            click.echo("Ja existe um usuario com este email.")
+            click.echo("Já existe um usuário com este email.")
             return
         usuario = Usuario(
             nome=nome,

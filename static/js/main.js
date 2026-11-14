@@ -1,11 +1,11 @@
-/* Dona Baunilha — interações leves do front.
-   Tudo aqui é melhoria progressiva: sem o JS, as páginas continuam funcionando. */
+/* Interações do front da loja. Sem JavaScript as páginas continuam
+   funcionando, isto só melhora a experiência. */
 (function () {
   'use strict';
 
   document.documentElement.classList.add('com-js');
 
-  /* ---- Menu no celular -------------------------------------------------- */
+  /* Menu no celular */
   var botaoMenu = document.querySelector('.menu-botao');
   var nav = document.getElementById('nav-principal');
 
@@ -31,7 +31,7 @@
     });
   }
 
-  /* ---- Fechar mensagens de retorno ------------------------------------- */
+  /* Fechar mensagens de retorno */
   document.addEventListener('click', function (e) {
     var fechar = e.target.closest('.mensagem .fechar');
     if (fechar) {
@@ -43,7 +43,7 @@
     }
   });
 
-  /* ---- Seletores de quantidade ----------------------------------------- */
+  /* Seletores de quantidade */
   document.querySelectorAll('[data-quantidade]').forEach(function (form) {
     var entrada = form.querySelector('input[name="quantidade"]');
     if (!entrada) return;
@@ -86,7 +86,7 @@
     }
   });
 
-  /* ---- Formas de pagamento: destaca a opção marcada -------------------- */
+  /* Destaca a forma de pagamento marcada */
   var opcoesForma = document.querySelectorAll('.forma input[type="radio"]');
   if (opcoesForma.length) {
     function sincronizaFormas() {
@@ -100,7 +100,7 @@
     sincronizaFormas();
   }
 
-  /* ---- Confirmação antes de remover no admin --------------------------- */
+  /* Confirmação antes de remover no admin */
   document.querySelectorAll('form[data-confirmar]').forEach(function (form) {
     form.addEventListener('submit', function (e) {
       if (!window.confirm(form.getAttribute('data-confirmar'))) {

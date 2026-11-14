@@ -9,7 +9,7 @@ from config import TestConfig
 
 @pytest.fixture
 def app():
-    # Cria a aplicacao de teste e monta um banco limpo em memoria.
+    # Cria a aplicação de teste e monta um banco limpo em memória.
     app = create_app(TestConfig)
     with app.app_context():
         db.create_all()
@@ -25,7 +25,7 @@ def client(app):
 
 @pytest.fixture
 def produto(app):
-    # Um produto disponivel para os testes de catalogo e carrinho.
+    # Um produto disponível para os testes de catálogo e carrinho.
     p = Produto(nome="Baunilha", descricao="Classico", preco=8.00, disponivel=True)
     db.session.add(p)
     db.session.commit()

@@ -19,7 +19,7 @@ def registro():
         email = request.form.get("email", "").strip().lower()
         senha = request.form.get("senha", "")
 
-        # Validacoes basicas antes de criar a conta.
+        # Validações básicas antes de criar a conta.
         if not nome or not email or not senha:
             flash("Preencha todos os campos.")
             return render_template("registro.html")
@@ -58,7 +58,7 @@ def login():
         email = request.form.get("email", "").strip().lower()
         senha = request.form.get("senha", "")
 
-        # Confere o email e o hash da senha antes de abrir a sessao.
+        # Confere o email e o hash da senha antes de abrir a sessão.
         usuario = Usuario.query.filter_by(email=email).first()
         if usuario is None or not check_password_hash(usuario.senha_hash, senha):
             flash("Email ou senha inválidos.")
@@ -66,7 +66,7 @@ def login():
 
         session["usuario_id"] = usuario.id
         flash("Login realizado.")
-        # Volta para a pagina pretendida quando ela for interna e segura.
+        # Volta para a página pretendida quando ela for interna e segura.
         destino = caminho_interno_seguro(proximo) or url_for("produtos.catalogo")
         return redirect(destino)
 

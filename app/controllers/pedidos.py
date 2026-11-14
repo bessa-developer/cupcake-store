@@ -33,7 +33,7 @@ FORMAS_PAGAMENTO = ["cartao", "pix", "boleto"]
 @pedidos_bp.route("/entrega", methods=["GET", "POST"])
 @login_required
 def entrega():
-    # Primeira etapa do fechamento. So avanca com carrinho que tem item disponivel.
+    # Primeira etapa do fechamento. Só avança com carrinho que tem item disponível.
     disponiveis, _ = carrinho_sessao.itens_disponiveis()
     if not disponiveis:
         flash("Seu carrinho está vazio.")
@@ -43,7 +43,7 @@ def entrega():
         dados = {campo: request.form.get(campo, "").strip() for campo in CAMPOS_ENTREGA}
         dados["observacao"] = request.form.get("observacao", "").strip()
 
-        # Todos os campos de endereco sao obrigatorios; a observacao e opcional.
+        # Todos os campos de endereço são obrigatórios. A observação é opcional.
         if any(not dados[campo] for campo in CAMPOS_ENTREGA):
             flash("Preencha todos os dados de entrega.")
             return render_template("entrega.html", entrega=dados)
@@ -85,7 +85,7 @@ def _finalizar(forma):
     # Confirma o pagamento e grava o pedido com itens, entrega e forma escolhida.
     disponiveis, indisponiveis = carrinho_sessao.itens_disponiveis()
 
-    # Descarta e avisa cupcakes que sairam de linha durante o fechamento.
+    # Descarta e avisa cupcakes que saíram de linha durante o fechamento.
     for item in indisponiveis:
         carrinho_sessao.remover(item["produto"].id)
         flash(f"{item['produto'].nome} saiu de linha e foi removido do carrinho.")
@@ -108,7 +108,7 @@ def _finalizar(forma):
     )
     db.session.add(pedido)
 
-    # Grava o preco do momento em cada item, preservando o valor historico.
+    # Grava o preço do momento em cada item, preservando o valor histórico.
     for item in disponiveis:
         pedido.itens.append(
             ItemPedido(
@@ -129,7 +129,7 @@ def _finalizar(forma):
 @login_required
 def confirmacao(pedido_id):
     pedido = db.session.get(Pedido, pedido_id)
-    # So o dono do pedido ve a confirmacao.
+    # Só o dono do pedido vê a confirmação.
     if pedido is None or pedido.usuario_id != usuario_atual().id:
         abort(404)
     return render_template("confirmacao.html", pedido=pedido)

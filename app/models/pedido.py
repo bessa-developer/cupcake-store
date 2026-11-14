@@ -27,10 +27,10 @@ class Pedido(db.Model):
     cep = db.Column(db.String(15))
     observacao = db.Column(db.Text)
 
-    # Forma de pagamento escolhida na etapa de pagamento (cartao, pix ou boleto).
+    # Forma de pagamento escolhida na etapa de pagamento (cartão, pix ou boleto).
     forma_pagamento = db.Column(db.String(20))
 
-    # Um pedido reune varios itens; apagar o pedido apaga seus itens.
+    # Um pedido reúne vários itens, e apagar o pedido apaga os itens junto.
     itens = db.relationship("ItemPedido", backref="pedido", cascade="all, delete-orphan")
 
     @property

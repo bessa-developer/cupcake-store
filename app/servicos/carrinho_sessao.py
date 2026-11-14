@@ -12,7 +12,7 @@ QUANTIDADE_MAXIMA = 99
 
 
 def _obter():
-    # O carrinho vive na sessao como um dicionario de produto_id para quantidade.
+    # O carrinho vive na sessão como um dicionário de produto_id para quantidade.
     return session.get(CHAVE, {})
 
 
@@ -31,7 +31,7 @@ def adicionar(produto_id, quantidade=1):
 
 
 def atualizar(produto_id, quantidade):
-    # Define a quantidade exata de um item; zero ou menos remove o item.
+    # Define a quantidade exata de um item. Zero ou menos remove o item.
     carrinho = _obter()
     chave = str(produto_id)
     if quantidade < 1:
@@ -73,8 +73,8 @@ def itens_detalhados():
 
 
 def itens_disponiveis():
-    # Separa os itens do carrinho em disponiveis e indisponiveis, usada no
-    # checkout para nao fechar pedido com cupcake que saiu de linha.
+    # Separa os itens do carrinho em disponíveis e indisponíveis, usada no
+    # checkout para não fechar pedido com cupcake que saiu de linha.
     itens, _ = itens_detalhados()
     disponiveis = [item for item in itens if item["produto"].disponivel]
     indisponiveis = [item for item in itens if not item["produto"].disponivel]

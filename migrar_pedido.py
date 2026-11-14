@@ -4,7 +4,7 @@ from app import create_app
 from app.extensions import db
 
 # Colunas novas da tabela de pedidos, adicionadas para as etapas de entrega
-# e pagamento. O ALTER e idempotente, entao rodar de novo nao causa erro.
+# e pagamento. O ALTER é idempotente, então rodar de novo não causa erro.
 COLUNAS = [
     ("destinatario", "VARCHAR(120)"),
     ("endereco", "VARCHAR(200)"),
@@ -25,7 +25,7 @@ def main():
                 text(f"ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS {nome} {tipo}")
             )
         db.session.commit()
-        print("Migracao aplicada. Colunas de entrega e pagamento garantidas em pedidos.")
+        print("Migração aplicada. As colunas de entrega e pagamento já existem em pedidos.")
 
 
 if __name__ == "__main__":

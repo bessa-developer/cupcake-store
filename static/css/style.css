@@ -1,10 +1,7 @@
-/* ==========================================================================
-   Dona Baunilha — sistema visual
-   Confeitaria de cupcakes. Clima acolhedor, caseiro e apetitoso.
-   Uma única fonte redonda (Fredoka) para tudo, inclusive números.
-   ========================================================================== */
+/* Estilos da loja Dona Baunilha. A fonte usada em todo o site é a Fustat,
+   carregada no base.html. */
 
-/* ---- Tokens -------------------------------------------------------------- */
+/* Tokens */
 :root {
   /* Cores quentes de confeitaria */
   --creme:        #FFF6EE;
@@ -21,7 +18,7 @@
   --cacau-suave:  #86695C;   /* texto secundário */
 
   --manteiga:     #F4C572;   /* destaque quente */
-  --pistache:     #7FA87A;   /* disponível / sucesso */
+  --pistache:     #7FA87A;   /* disponível e sucesso */
   --pistache-suave:#E7F1E4;
 
   --borda:        #EEDFD2;
@@ -46,7 +43,7 @@
   --largura: 1140px;
 }
 
-/* ---- Base ---------------------------------------------------------------- */
+/* Base */
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
@@ -136,7 +133,7 @@ textarea:focus-visible {
 }
 .pular-link:focus { left: 12px; }
 
-/* ---- Cabeçalho ----------------------------------------------------------- */
+/* Cabeçalho */
 .cabecalho {
   position: sticky;
   top: 0;
@@ -263,7 +260,7 @@ textarea:focus-visible {
 .menu-botao span::before { top: -6px; }
 .menu-botao span::after { top: 6px; }
 
-/* ---- Mensagens de retorno (flash) --------------------------------------- */
+/* Mensagens de retorno */
 .mensagens { margin-top: 18px; display: grid; gap: 10px; }
 .mensagem {
   display: flex;
@@ -300,7 +297,7 @@ textarea:focus-visible {
 }
 .mensagem .fechar:hover { background: var(--creme-fundo); }
 
-/* ---- Botões -------------------------------------------------------------- */
+/* Botões */
 .botao {
   display: inline-flex;
   align-items: center;
@@ -350,7 +347,7 @@ textarea:focus-visible {
 .botao.botao-medio { padding: 11px 18px; }
 .botao.botao-mini { padding: 9px 12px; }
 
-/* ---- Cartão genérico ----------------------------------------------------- */
+/* Cartão genérico */
 .cartao {
   background: var(--superficie);
   border: 1px solid var(--borda);
@@ -358,7 +355,7 @@ textarea:focus-visible {
   box-shadow: var(--sombra-1);
 }
 
-/* ---- Cabeçalho de página ------------------------------------------------- */
+/* Cabeçalho de página */
 .pagina-topo { margin-bottom: 28px; }
 .pagina-topo p { color: var(--cacau-suave); max-width: 60ch; margin: 0; }
 .pagina-topo-centro { text-align: center; }
@@ -375,7 +372,7 @@ textarea:focus-visible {
 .migalha a { color: var(--cacau-suave); }
 .migalha a:hover { color: var(--morango-escuro); }
 
-/* ---- Vitrine / destaque -------------------------------------------------- */
+/* Vitrine */
 .vitrine {
   position: relative;
   overflow: hidden;
@@ -408,7 +405,7 @@ textarea:focus-visible {
 }
 .credito a { color: #fff; text-decoration: underline; }
 
-/* ---- Grade de produtos --------------------------------------------------- */
+/* Grade de produtos */
 .grade-produtos {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -475,7 +472,7 @@ textarea:focus-visible {
   backdrop-filter: grayscale(40%);
 }
 
-/* ---- Detalhe do produto -------------------------------------------------- */
+/* Detalhe do produto */
 .detalhe {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -509,7 +506,7 @@ textarea:focus-visible {
   gap: 18px;
 }
 
-/* ---- Seletor de quantidade ---------------------------------------------- */
+/* Seletor de quantidade */
 .qtd-campo { display: flex; flex-direction: column; gap: 7px; }
 .qtd-campo > label { font-weight: 500; font-size: 0.95rem; }
 .contador {
@@ -538,7 +535,7 @@ textarea:focus-visible {
 .contador input::-webkit-outer-spin-button,
 .contador input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
-/* ---- Carrinho ------------------------------------------------------------ */
+/* Carrinho */
 .carrinho-grade {
   display: grid;
   grid-template-columns: 1fr 340px;
@@ -614,7 +611,7 @@ textarea:focus-visible {
 .resumo .botao { margin-top: 20px; }
 .resumo .continuar { margin-top: 10px; text-align: center; }
 
-/* ---- Estados vazios ------------------------------------------------------ */
+/* Estados vazios */
 .vazio {
   text-align: center;
   padding: 64px 24px;
@@ -632,7 +629,7 @@ textarea:focus-visible {
 .vazio h2 { margin-bottom: 8px; }
 .vazio p { color: var(--cacau-suave); margin-bottom: 22px; }
 
-/* ---- Passos do fechamento ------------------------------------------------ */
+/* Passos do fechamento */
 .passos {
   display: flex;
   align-items: center;
@@ -663,7 +660,7 @@ textarea:focus-visible {
 .passo-traco { flex: 1; height: 2px; background: var(--borda-forte); min-width: 24px; border-radius: 2px; }
 .passo-traco.feito { background: var(--pistache); }
 
-/* ---- Formulários --------------------------------------------------------- */
+/* Formulários */
 .form-cartao {
   background: var(--superficie);
   border: 1px solid var(--borda);
@@ -724,7 +721,7 @@ textarea.entrada { resize: vertical; min-height: 92px; }
   color: var(--cacau-suave);
 }
 
-/* ---- Formas de pagamento ------------------------------------------------- */
+/* Formas de pagamento */
 .formas { display: grid; gap: 14px; margin-bottom: 8px; }
 .formas-grupo { border: none; padding: 0; margin: 0 0 8px; }
 .campo.formas-legenda { font-weight: 500; padding: 0; margin-bottom: 14px; }
@@ -771,7 +768,7 @@ textarea.entrada { resize: vertical; min-height: 92px; }
 .forma.selecionada .marca-radio::after { transform: scale(1); }
 .forma input:focus-visible + .marca-radio { outline: 3px solid var(--manteiga); outline-offset: 2px; }
 
-/* ---- Confirmação --------------------------------------------------------- */
+/* Confirmação */
 .confirma-topo {
   text-align: center;
   padding: 16px 0 34px;
@@ -837,7 +834,7 @@ textarea.entrada { resize: vertical; min-height: 92px; }
 .pedido-total-geral span:first-child { font-weight: 500; font-size: 1.1rem; }
 .pedido-total-geral .total-valor { font-size: 1.5rem; color: var(--morango-escuro); }
 
-/* ---- Selos de status do pedido ------------------------------------------ */
+/* Selos de status do pedido */
 .status {
   display: inline-flex; align-items: center; gap: 7px;
   padding: 6px 13px; border-radius: var(--pilula);
@@ -850,7 +847,7 @@ textarea.entrada { resize: vertical; min-height: 92px; }
 .status-entregue, .status-concluido { background: var(--creme-fundo); color: var(--caramelo); }
 .status-cancelado { background: #F2E6E6; color: #9a5050; }
 
-/* ---- Meus pedidos -------------------------------------------------------- */
+/* Meus pedidos */
 .pedidos-lista { display: grid; gap: 20px; }
 .pedido-cartao {
   background: var(--superficie);
@@ -873,7 +870,7 @@ textarea.entrada { resize: vertical; min-height: 92px; }
 .pedido-meta { display: flex; flex-wrap: wrap; gap: 26px; margin-bottom: 16px; }
 .pedido-meta .endereco-curto { max-width: 46ch; }
 
-/* ---- Admin --------------------------------------------------------------- */
+/* Admin */
 .admin-barra {
   display: flex; flex-wrap: wrap; align-items: center; gap: 14px;
   margin-bottom: 24px;
@@ -948,7 +945,7 @@ textarea.entrada { resize: vertical; min-height: 92px; }
 .switch-campo .texto strong { display: block; }
 .switch-campo .texto span { color: var(--cacau-suave); font-size: 0.9rem; }
 
-/* ---- Erro 404 ------------------------------------------------------------ */
+/* Erro 404 */
 .erro-404 { text-align: center; padding: 70px 20px; max-width: 520px; margin: 0 auto; }
 .erro-404 .numero {
   font-size: clamp(5rem, 16vw, 8rem);
@@ -959,7 +956,7 @@ textarea.entrada { resize: vertical; min-height: 92px; }
 }
 .erro-404 p { color: var(--cacau-suave); font-size: 1.1rem; margin: 10px 0 26px; }
 
-/* ---- Rodapé -------------------------------------------------------------- */
+/* Rodapé */
 .rodape {
   margin-top: 40px;
   background: var(--cacau);
@@ -987,7 +984,7 @@ textarea.entrada { resize: vertical; min-height: 92px; }
 }
 .rodape-base a { color: #d8c4b6; text-decoration: underline; }
 
-/* ---- Responsivo ---------------------------------------------------------- */
+/* Responsivo */
 @media (max-width: 880px) {
   .vitrine-grade { grid-template-columns: 1fr; }
   .vitrine-foto { min-height: 260px; order: -1; }

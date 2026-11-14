@@ -8,7 +8,7 @@ from app.models import Usuario
 
 
 def usuario_atual():
-    # Retorna o usuario logado a partir do id guardado na sessao, ou None.
+    # Retorna o usuário logado a partir do id guardado na sessão, ou None.
     usuario_id = session.get("usuario_id")
     if usuario_id is None:
         return None
@@ -16,7 +16,7 @@ def usuario_atual():
 
 
 def caminho_interno_seguro(destino):
-    # Aceita apenas caminhos do proprio site, evitando redirecionamento aberto.
+    # Aceita apenas caminhos do próprio site, evitando redirecionamento aberto.
     if not destino:
         return None
     partes = urlparse(destino)
@@ -29,14 +29,14 @@ def caminho_interno_seguro(destino):
 
 
 def _redirecionar_login():
-    # Guarda a pagina pretendida para voltar a ela depois do login.
+    # Guarda a página pretendida para voltar a ela depois do login.
     flash("Faça login para continuar.")
     destino = request.url if request.method == "GET" else request.referrer
     return redirect(url_for("auth.login", next=destino))
 
 
 def login_required(view):
-    # Bloqueia a rota quando nao ha usuario logado, mandando para o login.
+    # Bloqueia a rota quando não há usuário logado, mandando para o login.
     @wraps(view)
     def wrapper(*args, **kwargs):
         if usuario_atual() is None:
@@ -47,7 +47,7 @@ def login_required(view):
 
 
 def admin_required(view):
-    # Permite a rota apenas para usuario logado e com perfil de admin.
+    # Permite a rota apenas para usuário logado e com perfil de admin.
     @wraps(view)
     def wrapper(*args, **kwargs):
         usuario = usuario_atual()
@@ -62,7 +62,7 @@ def admin_required(view):
 
 
 def registrar_contexto(app):
-    # Deixa o usuario atual disponivel em todos os templates.
+    # Deixa o usuário atual disponível em todos os templates.
     @app.context_processor
     def injetar_usuario():
         return {"usuario_atual": usuario_atual()}

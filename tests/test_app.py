@@ -10,7 +10,7 @@ def _criar_produto(nome, preco, disponivel=True):
 
 
 def _fluxo_pedido(client, forma="pix"):
-    # Percorre as etapas de entrega e pagamento ate finalizar o pedido.
+    # Percorre as etapas de entrega e pagamento até finalizar o pedido.
     client.post(
         "/pedidos/entrega",
         data={
@@ -95,7 +95,7 @@ def test_checkout_gera_pedido_e_limpa_carrinho(client, produto, usuario, login):
     assert pedido.cidade == "Belo Horizonte"
     assert len(pedido.itens) == 1
     assert pedido.itens[0].quantidade == 3
-    # O preco do item guarda o valor do momento da compra.
+    # O preço do item guarda o valor do momento da compra.
     assert pedido.itens[0].preco_unitario == produto.preco
     with client.session_transaction() as sessao:
         assert "carrinho" not in sessao
@@ -129,7 +129,7 @@ def test_checkout_ignora_item_indisponivel(client, usuario, login):
     client.post(f"/carrinho/adicionar/{disponivel.id}", data={"quantidade": 1})
     client.post(f"/carrinho/adicionar/{indisponivel.id}", data={"quantidade": 1})
 
-    # O item sai de linha depois de ja estar no carrinho.
+    # O item sai de linha depois de já estar no carrinho.
     indisponivel.disponivel = False
     db.session.commit()
 
@@ -159,7 +159,7 @@ def test_login_retorna_ao_destino_pretendido(client, usuario, login):
     assert resposta.status_code == 302
     assert "next=" in resposta.headers["Location"]
 
-    # Apos autenticar com o next, o usuario volta ao destino.
+    # Após autenticar com o next, o usuário volta ao destino.
     retorno = client.post(
         "/login",
         data={"email": "cliente@exemplo.com", "senha": "senha123", "next": "http://localhost/pedidos/"},
@@ -225,7 +225,7 @@ def test_confirmacao_somente_do_dono(client, produto, usuario, admin, login):
     pedido = Pedido.query.filter_by(usuario_id=usuario.id).first()
     assert pedido is not None
 
-    # Outro usuario nao enxerga a confirmacao de um pedido alheio.
+    # Outro usuário não enxerga a confirmação de um pedido alheio.
     client.post("/logout")
     login("admin@exemplo.com", "admin123")
     resposta = client.get(f"/pedidos/confirmacao/{pedido.id}")

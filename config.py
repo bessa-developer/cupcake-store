@@ -2,16 +2,16 @@ import os
 
 from dotenv import load_dotenv
 
-# Em desenvolvimento, carrega as variaveis dos arquivos locais. O .env.local
-# e gerado pela Neon com a DATABASE_URL; o .env serve para o resto (ex. SECRET_KEY).
+# Em desenvolvimento, carrega as variáveis dos arquivos locais. O .env.local
+# é gerado pela Neon com a DATABASE_URL e o .env guarda o resto, como a SECRET_KEY.
 load_dotenv(".env.local")
 load_dotenv()
 
 
 def _normalizar_url(url):
     # Fixa o driver psycopg (psycopg3) na URL do Postgres. O Neon entrega a
-    # string como postgres:// ou postgresql://; aqui ela vira sempre
-    # postgresql+psycopg://, evitando depender do driver padrao do SQLAlchemy.
+    # string como postgres:// ou postgresql://, e aqui ela vira sempre
+    # postgresql+psycopg://, evitando depender do driver padrão do SQLAlchemy.
     if not url:
         return url
     if url.startswith("postgres://"):
@@ -40,7 +40,7 @@ class Config:
 
 
 class TestConfig(Config):
-    # Forca um SQLite em memoria para os testes nunca tocarem no banco do Neon.
+    # Força um SQLite em memória para os testes nunca tocarem no banco do Neon.
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite://"
     SECRET_KEY = "chave-de-teste"

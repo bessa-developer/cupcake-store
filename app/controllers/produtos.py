@@ -8,7 +8,7 @@ produtos_bp = Blueprint("produtos", __name__, url_prefix="/produtos")
 
 @produtos_bp.route("/")
 def catalogo():
-    # Lista apenas os cupcakes disponiveis para o cliente.
+    # Lista apenas os cupcakes disponíveis para o cliente.
     lista = Produto.query.filter_by(disponivel=True).order_by(Produto.nome).all()
     return render_template("catalogo.html", produtos=lista)
 

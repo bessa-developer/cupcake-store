@@ -1,16 +1,16 @@
-{# Formatação de preço no padrão brasileiro: R$ 9,50 #}
+{# Preço no formato brasileiro, por exemplo R$ 9,50. #}
 {% macro preco(valor) -%}
 R$ {{ "%.2f"|format(valor)|replace(".", ",") }}
 {%- endmacro %}
 
-{# Foto do produto: usa o campo imagem quando houver, senão uma foto padrão agradável. #}
+{# Usa a foto cadastrada no produto e, sem ela, uma foto padrão de cupcake. #}
 {% set imagem_padrao = "https://images.unsplash.com/photo-1607478900766-efe13248b125?auto=format&fit=crop&w=800&q=80" %}
 
 {% macro foto_produto(produto) -%}
 {{ produto.imagem if produto.imagem else imagem_padrao }}
 {%- endmacro %}
 
-{# Conjunto de ícones em SVG. Sem emojis, herdam a cor pelo currentColor. #}
+{# Ícones em SVG usados nas telas. Eles pegam a cor do texto ao redor. #}
 {% macro icone(nome, tamanho=20) -%}
 <svg class="ic ic-{{ nome }}" width="{{ tamanho }}" height="{{ tamanho }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 {%- if nome == 'cupcake' -%}
@@ -33,7 +33,7 @@ R$ {{ "%.2f"|format(valor)|replace(".", ",") }}
 </svg>
 {%- endmacro %}
 
-{# Nome amigável da forma de pagamento #}
+{# Nome da forma de pagamento como aparece para o cliente. #}
 {% macro forma_nome(forma) -%}
 {%- if forma == 'cartao' -%}Cartão
 {%- elif forma == 'pix' -%}Pix
@@ -41,18 +41,19 @@ R$ {{ "%.2f"|format(valor)|replace(".", ",") }}
 {%- else -%}{{ forma|capitalize }}{%- endif -%}
 {%- endmacro %}
 
-{# Ícone da forma de pagamento #}
+{# Ícone de cada forma de pagamento. #}
 {% macro forma_icone(forma, tamanho=22) -%}
 {%- if forma in ['cartao', 'pix', 'boleto'] -%}{{ icone(forma, tamanho) }}{%- else -%}{{ icone('cartao', tamanho) }}{%- endif -%}
 {%- endmacro %}
 
-{# Selo de status do pedido. A classe vem do próprio status, então estilos novos
-   podem ser adicionados no CSS conforme o backend usar outros valores. #}
+{# Selo com o status do pedido. A classe CSS segue o nome do status, como
+   status-confirmado. #}
 {% macro status_selo(status) -%}
 <span class="status status-{{ status|lower|replace(' ', '-') }}">{{ status|capitalize }}</span>
 {%- endmacro %}
 
-{# Indicador das etapas do fechamento. atual = 1 (entrega), 2 (pagamento) ou 3 (confirmação). #}
+{# Etapas do fechamento do pedido. O parâmetro atual vale 1 na entrega, 2 no
+   pagamento e 3 na confirmação. #}
 {% macro passos(atual) -%}
 {% set nomes = ['Entrega', 'Pagamento', 'Confirmação'] %}
 <ol class="passos" aria-label="Etapas do pedido">

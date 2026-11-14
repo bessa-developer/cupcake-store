@@ -15,7 +15,7 @@ def ver():
 
 @carrinho_bp.route("/adicionar/<int:produto_id>", methods=["POST"])
 def adicionar(produto_id):
-    # So adiciona produto existente e disponivel.
+    # Só adiciona produto existente e disponível.
     produto = db.session.get(Produto, produto_id)
     if produto is None or not produto.disponivel:
         flash("Produto indisponível.")
