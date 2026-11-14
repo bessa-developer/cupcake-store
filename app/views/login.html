@@ -11,6 +11,7 @@
     </div>
 
     <form action="{{ url_for('auth.login') }}" method="post" class="form-cartao">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <input type="hidden" name="next" value="{{ proximo or '' }}">
 
       <div class="campo">

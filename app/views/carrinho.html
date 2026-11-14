@@ -26,6 +26,7 @@
 
               <div class="carrinho-item-controles">
                 <form action="{{ url_for('carrinho.atualizar', produto_id=item.produto.id) }}" method="post" data-quantidade data-enviar-ao-mudar>
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                   <div class="contador contador-mini">
                     <button type="button" class="menos" aria-label="Diminuir quantidade">−</button>
                     <input type="number" name="quantidade" value="{{ item.quantidade }}" min="1" max="99" inputmode="numeric" aria-label="Quantidade de {{ item.produto.nome }}">
@@ -35,6 +36,7 @@
                 </form>
 
                 <form action="{{ url_for('carrinho.remover', produto_id=item.produto.id) }}" method="post">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                   <button type="submit" class="link-remover">Remover</button>
                 </form>
               </div>

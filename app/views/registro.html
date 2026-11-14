@@ -11,6 +11,7 @@
     </div>
 
     <form action="{{ url_for('auth.registro') }}" method="post" class="form-cartao">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="campo">
         <label for="nome">Nome</label>
         <input class="entrada" type="text" id="nome" name="nome" required autocomplete="name"

@@ -29,6 +29,7 @@
 
       {% if produto.disponivel %}
         <form action="{{ url_for('carrinho.adicionar', produto_id=produto.id) }}" method="post" class="detalhe-compra" data-quantidade>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <div class="qtd-campo">
             <label for="quantidade">Quantidade</label>
             <div class="contador">

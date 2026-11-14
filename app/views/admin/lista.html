@@ -50,6 +50,7 @@
                   <a href="{{ url_for('admin.editar', produto_id=produto.id) }}" class="acao-icone">Editar</a>
                   <form action="{{ url_for('admin.remover', produto_id=produto.id) }}" method="post"
                         data-confirmar="Remover {{ produto.nome }} da loja?">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <button type="submit" class="acao-icone acao-remover">Remover</button>
                   </form>
                 </div>

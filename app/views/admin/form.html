@@ -20,6 +20,7 @@
 
     <form action="{{ url_for('admin.editar', produto_id=produto.id) if editando else url_for('admin.novo') }}"
           method="post" class="form-cartao">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
       <div class="campo">
         <label for="nome">Nome do cupcake</label>

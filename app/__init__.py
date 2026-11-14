@@ -1,9 +1,12 @@
+import os
+
 import click
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, request, url_for, flash
+from flask_wtf.csrf import CSRFError
 from werkzeug.security import generate_password_hash
 
-from config import Config
-from app.extensions import db
+from config import Config, CHAVE_DESENVOLVIMENTO
+from app.extensions import db, csrf
 
 
 def create_app(config_class=Config):
@@ -14,9 +17,11 @@ def create_app(config_class=Config):
         static_folder="../static",
     )
     app.config.from_object(config_class)
+    _validar_ambiente(app)
 
     # Liga o banco a aplicacao.
     db.init_app(app)
+    csrf.init_app(app)
 
     # Garante que os models sejam conhecidos pelo SQLAlchemy.
     from app import models  # noqa: F401
@@ -52,9 +57,30 @@ def create_app(config_class=Config):
     def pagina_nao_encontrada(erro):
         return render_template("404.html"), 404
 
+    # Formulário enviado sem token válido, em geral por sessão expirada.
+    @app.errorhandler(CSRFError)
+    def token_invalido(erro):
+        from app.servicos.autenticacao import caminho_interno_seguro
+
+        flash("A sessão expirou. Tente novamente.")
+        destino = caminho_interno_seguro(request.referrer) or url_for("produtos.catalogo")
+        return redirect(destino)
+
     registrar_comandos(app)
 
     return app
+
+
+def _validar_ambiente(app):
+    # A Vercel define a variável VERCEL. Lá o app não sobe sem uma chave de
+    # sessão própria, e o cookie da sessão só trafega por HTTPS.
+    if not os.getenv("VERCEL"):
+        return
+    if app.config.get("SECRET_KEY") in (None, "", CHAVE_DESENVOLVIMENTO):
+        raise RuntimeError(
+            "Defina a variável SECRET_KEY nas configurações da Vercel antes do deploy."
+        )
+    app.config["SESSION_COOKIE_SECURE"] = True
 
 
 def registrar_comandos(app):

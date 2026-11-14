@@ -15,6 +15,7 @@
     </div>
 
     <form action="{{ url_for('pedidos.entrega') }}" method="post" class="form-cartao">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="campo {{ 'campo-erro' if erros.destinatario }}">
         <label for="destinatario">Destinatário <span class="obrigatorio">*</span></label>
         <input class="entrada" type="text" id="destinatario" name="destinatario"

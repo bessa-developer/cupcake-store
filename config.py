@@ -21,8 +21,15 @@ def _normalizar_url(url):
     return url
 
 
+CHAVE_DESENVOLVIMENTO = "chave-de-desenvolvimento"
+
+
 class Config:
-    SECRET_KEY = os.getenv("SECRET_KEY", "chave-de-desenvolvimento")
+    # A chave assina o cookie da sessão. O valor de desenvolvimento só vale na
+    # máquina local, e o create_app recusa esse valor em produção.
+    SECRET_KEY = os.getenv("SECRET_KEY", CHAVE_DESENVOLVIMENTO)
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = "Lax"
     # Usa o Neon quando a DATABASE_URL existir; sem ela, cai para um SQLite
     # em memoria, que mantem o app e os testes rodando antes de ligar o banco.
     SQLALCHEMY_DATABASE_URI = _normalizar_url(os.getenv("DATABASE_URL")) or "sqlite://"
@@ -34,3 +41,5 @@ class TestConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite://"
     SECRET_KEY = "chave-de-teste"
+    # Nos testes o token CSRF fica desligado, menos no teste que confere a proteção.
+    WTF_CSRF_ENABLED = False

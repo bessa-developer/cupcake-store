@@ -44,6 +44,7 @@
           {% endif %}
           <span class="saudacao">Olá, {{ usuario_atual.nome.split(' ')[0] }}</span>
           <form action="{{ url_for('auth.logout') }}" method="post" style="margin:0;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button type="submit" class="link-forma">Sair</button>
           </form>
         {% else %}
