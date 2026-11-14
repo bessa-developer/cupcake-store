@@ -1,5 +1,5 @@
 import click
-from flask import Flask
+from flask import Flask, render_template
 from werkzeug.security import generate_password_hash
 
 from config import Config
@@ -39,6 +39,18 @@ def create_app(config_class=Config):
     # Deixa o usuario logado disponivel nos templates.
     from app.auth_utils import registrar_contexto
     registrar_contexto(app)
+
+    # Contador de itens do carrinho, usado no topo de todas as paginas.
+    from app import carrinho
+
+    @app.context_processor
+    def injetar_contador():
+        return {"total_itens_carrinho": carrinho.quantidade_total()}
+
+    # Pagina de erro 404 no estilo da loja.
+    @app.errorhandler(404)
+    def pagina_nao_encontrada(erro):
+        return render_template("404.html"), 404
 
     registrar_comandos(app)
 

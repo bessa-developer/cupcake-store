@@ -48,6 +48,11 @@ def limpar():
     session.pop(CHAVE, None)
 
 
+def quantidade_total():
+    # Soma das quantidades no carrinho, usada no contador do topo.
+    return sum(_obter().values())
+
+
 def itens_detalhados():
     # Monta a lista de itens com o produto, o subtotal e o total geral,
     # buscando os produtos atuais no banco.
