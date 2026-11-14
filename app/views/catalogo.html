@@ -45,7 +45,7 @@
             <div class="produto-rodape">
               <span class="preco">{{ m.preco(produto.preco) }}</span>
               {% if produto.disponivel %}
-                <a href="{{ url_for('produtos.detalhe', produto_id=produto.id) }}" class="botao botao-secundario" style="padding:11px 18px;">Ver detalhes</a>
+                <a href="{{ url_for('produtos.detalhe', produto_id=produto.id) }}" class="botao botao-secundario botao-medio">Ver detalhes</a>
               {% else %}
                 <span class="selo-estado selo-esgotado">Indisponível</span>
               {% endif %}

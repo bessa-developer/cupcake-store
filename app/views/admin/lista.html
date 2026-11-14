@@ -8,7 +8,7 @@
   <div class="admin-barra">
     <div>
       <h1>Cupcakes da loja</h1>
-      <p style="margin:4px 0 0;color:var(--cacau-suave);">Todos os cupcakes cadastrados, disponíveis ou não.</p>
+      <p class="admin-barra-sub">Todos os cupcakes cadastrados, disponíveis ou não.</p>
     </div>
     <a href="{{ url_for('admin.novo') }}" class="botao botao-primario">Novo cupcake</a>
   </div>
@@ -22,7 +22,7 @@
             <th>Cupcake</th>
             <th>Preço</th>
             <th>Situação</th>
-            <th style="text-align:right;">Ações</th>
+            <th class="th-acoes">Ações</th>
           </tr>
         </thead>
         <tbody>

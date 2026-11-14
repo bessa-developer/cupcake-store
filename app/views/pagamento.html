@@ -14,15 +14,15 @@
   {{ m.passos(2) }}
 
   <div class="form-medio">
-    <div class="pagina-topo" style="text-align:center;">
+    <div class="pagina-topo pagina-topo-centro">
       <h1>Pagamento</h1>
-      <p style="margin:0 auto;">Escolha como deseja pagar. Este é um ambiente de simulação e nenhuma cobrança será realizada.</p>
+      <p>Escolha como deseja pagar. Este é um ambiente de simulação e nenhuma cobrança será realizada.</p>
     </div>
 
     <form action="{{ url_for('pedidos.pagamento') }}" method="post" class="form-cartao">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <fieldset style="border:none;padding:0;margin:0 0 8px;">
-        <legend class="campo" style="font-weight:500;padding:0;margin-bottom:14px;">Formas de pagamento</legend>
+      <fieldset class="formas-grupo">
+        <legend class="campo formas-legenda">Formas de pagamento</legend>
 
         <div class="formas">
           {% for forma in formas %}

@@ -15,7 +15,7 @@
 
     <div class="pagina-topo">
       <h1>{{ 'Editar cupcake' if editando else 'Novo cupcake' }}</h1>
-      <p style="margin:0;">{{ 'Ajuste as informações e salve.' if editando else 'Preencha os dados para colocar na vitrine.' }}</p>
+      <p>{{ 'Ajuste as informações e salve.' if editando else 'Preencha os dados para colocar na vitrine.' }}</p>
     </div>
 
     <form action="{{ url_for('admin.editar', produto_id=produto.id) if editando else url_for('admin.novo') }}"

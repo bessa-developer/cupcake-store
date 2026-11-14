@@ -11,7 +11,7 @@
     <div class="confirma-topo">
       <div class="confirma-selo" aria-hidden="true">{{ m.icone('check', 46) }}</div>
       <h1>Pedido confirmado</h1>
-      <p style="color:var(--cacau-suave);max-width:46ch;margin:0 auto 10px;">
+      <p class="confirma-texto">
         Seu pedido foi registrado e já está em preparo. Você pode acompanhar o andamento em Meus pedidos.
       </p>
       <span class="confirma-pedido-id">Pedido nº <span class="num">{{ pedido.id }}</span></span>
@@ -56,7 +56,7 @@
 
     <div class="painel">
       <h2><span class="ponto" aria-hidden="true"></span> Pagamento</h2>
-      <div class="forma" style="cursor:default;background:var(--superficie-2);">
+      <div class="forma forma-resumo">
         <span class="icone-forma" aria-hidden="true">{{ m.forma_icone(pedido.forma_pagamento) }}</span>
         <span class="forma-texto">
           <strong>{{ m.forma_nome(pedido.forma_pagamento) }}</strong>
@@ -70,7 +70,7 @@
       {{ m.itens_do_pedido(pedido, "Total") }}
     </div>
 
-    <div class="form-acoes" style="justify-content:center;">
+    <div class="form-acoes form-acoes-centro">
       <a href="{{ url_for('pedidos.meus_pedidos') }}" class="botao botao-primario botao-grande">Ver meus pedidos</a>
       <a href="{{ url_for('produtos.catalogo') }}" class="botao botao-secundario">Continuar comprando</a>
     </div>

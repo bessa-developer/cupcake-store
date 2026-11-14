@@ -9,9 +9,9 @@
   {{ m.passos(1) }}
 
   <div class="form-medio">
-    <div class="pagina-topo" style="text-align:center;">
+    <div class="pagina-topo pagina-topo-centro">
       <h1>Endereço de entrega</h1>
-      <p style="margin:0 auto;">Informe onde você deseja receber o seu pedido.</p>
+      <p>Informe onde você deseja receber o seu pedido.</p>
     </div>
 
     <form action="{{ url_for('pedidos.entrega') }}" method="post" class="form-cartao">
@@ -24,7 +24,7 @@
         {% if erros.destinatario %}<div class="mensagem-campo">{{ erros.destinatario }}</div>{% endif %}
       </div>
 
-      <div class="form-grade-2" style="grid-template-columns: 2.4fr 1fr;">
+      <div class="form-grade-2 grade-endereco">
         <div class="campo">
           <label for="endereco">Endereço <span class="obrigatorio">*</span></label>
           <input class="entrada" type="text" id="endereco" name="endereco"

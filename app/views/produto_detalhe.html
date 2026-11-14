@@ -42,12 +42,12 @@
         </form>
       {% else %}
         <div class="detalhe-compra">
-          <p style="margin:0;color:var(--cacau-suave);">Este sabor está esgotado no momento. Confira os outros cupcakes disponíveis.</p>
+          <p class="detalhe-esgotado">Este sabor está esgotado no momento. Confira os outros cupcakes disponíveis.</p>
           <a href="{{ url_for('produtos.catalogo') }}" class="botao botao-secundario">Ver outros cupcakes</a>
         </div>
       {% endif %}
 
-      <p style="margin-top:22px;">
+      <p class="detalhe-voltar">
         <a href="{{ url_for('produtos.catalogo') }}">Voltar ao catálogo</a>
       </p>
     </div>
