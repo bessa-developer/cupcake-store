@@ -37,15 +37,15 @@ def create_app(config_class=Config):
     app.register_blueprint(admin_bp)
 
     # Deixa o usuario logado disponivel nos templates.
-    from app.auth_utils import registrar_contexto
+    from app.servicos.autenticacao import registrar_contexto
     registrar_contexto(app)
 
     # Contador de itens do carrinho, usado no topo de todas as paginas.
-    from app import carrinho
+    from app.servicos import carrinho_sessao
 
     @app.context_processor
     def injetar_contador():
-        return {"total_itens_carrinho": carrinho.quantidade_total()}
+        return {"total_itens_carrinho": carrinho_sessao.quantidade_total()}
 
     # Pagina de erro 404 no estilo da loja.
     @app.errorhandler(404)

@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.extensions import db
 from app.models import Usuario
-from app.auth_utils import caminho_interno_seguro
+from app.servicos.autenticacao import caminho_interno_seguro
 
 auth_bp = Blueprint("auth", __name__)
 

@@ -11,8 +11,8 @@ from flask import (
 
 from app.extensions import db
 from app.models import Pedido, ItemPedido
-from app.auth_utils import login_required, usuario_atual
-from app import carrinho as servico
+from app.servicos.autenticacao import login_required, usuario_atual
+from app.servicos import carrinho_sessao
 
 pedidos_bp = Blueprint("pedidos", __name__, url_prefix="/pedidos")
 
@@ -24,7 +24,7 @@ FORMAS_PAGAMENTO = ["cartao", "pix", "boleto"]
 @login_required
 def entrega():
     # Primeira etapa do fechamento. So avanca com carrinho que tem item disponivel.
-    disponiveis, _ = servico.itens_disponiveis()
+    disponiveis, _ = carrinho_sessao.itens_disponiveis()
     if not disponiveis:
         flash("Seu carrinho está vazio.")
         return redirect(url_for("carrinho.ver"))
@@ -64,11 +64,11 @@ def pagamento():
 
 def _finalizar(forma):
     # Confirma o pagamento e grava o pedido com itens, entrega e forma escolhida.
-    disponiveis, indisponiveis = servico.itens_disponiveis()
+    disponiveis, indisponiveis = carrinho_sessao.itens_disponiveis()
 
     # Descarta e avisa cupcakes que sairam de linha durante o fechamento.
     for item in indisponiveis:
-        servico.remover(item["produto"].id)
+        carrinho_sessao.remover(item["produto"].id)
         flash(f"{item['produto'].nome} saiu de linha e foi removido do carrinho.")
 
     if not disponiveis:
@@ -101,7 +101,7 @@ def _finalizar(forma):
         )
 
     db.session.commit()
-    servico.limpar()
+    carrinho_sessao.limpar()
     session.pop("entrega", None)
     flash("Pedido realizado com sucesso.")
     return redirect(url_for("pedidos.confirmacao", pedido_id=pedido.id))

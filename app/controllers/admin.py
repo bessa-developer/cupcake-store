@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 
 from app.extensions import db
 from app.models import Produto
-from app.auth_utils import admin_required
+from app.servicos.autenticacao import admin_required
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
