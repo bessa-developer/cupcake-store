@@ -72,6 +72,12 @@ def create_app(config_class=Config):
 
 
 def _validar_ambiente(app):
+    # Fora dos testes, o app não sobe sem o endereço do banco.
+    if not app.config.get("TESTING") and not app.config.get("SQLALCHEMY_DATABASE_URI"):
+        raise RuntimeError(
+            "Defina a variável DATABASE_URL com a connection string do Neon."
+        )
+
     # A Vercel define a variável VERCEL. Lá o app não sobe sem uma chave de
     # sessão própria, e o cookie da sessão só trafega por HTTPS.
     if not os.getenv("VERCEL"):

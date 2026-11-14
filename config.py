@@ -30,10 +30,13 @@ class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", CHAVE_DESENVOLVIMENTO)
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
-    # Usa o Neon quando a DATABASE_URL existir; sem ela, cai para um SQLite
-    # em memoria, que mantem o app e os testes rodando antes de ligar o banco.
-    SQLALCHEMY_DATABASE_URI = _normalizar_url(os.getenv("DATABASE_URL")) or "sqlite://"
+    # O banco é o PostgreSQL do Neon. Sem a DATABASE_URL o create_app para com
+    # uma mensagem, em vez de subir com um banco vazio.
+    SQLALCHEMY_DATABASE_URI = _normalizar_url(os.getenv("DATABASE_URL"))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # O Neon encerra conexões paradas. O pre_ping testa a conexão antes de usar
+    # e abre outra se ela tiver caído.
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
 
 
 class TestConfig(Config):
