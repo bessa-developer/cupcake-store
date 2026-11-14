@@ -4,8 +4,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app.extensions import db
 from app.models import Usuario
 from app.servicos.autenticacao import caminho_interno_seguro
+from app.servicos.validacao import texto_ate, email_valido
 
 auth_bp = Blueprint("auth", __name__)
+
+SENHA_MINIMA = 6
+SENHA_MAXIMA = 128
 
 
 @auth_bp.route("/registro", methods=["GET", "POST"])
@@ -18,6 +22,15 @@ def registro():
         # Validacoes basicas antes de criar a conta.
         if not nome or not email or not senha:
             flash("Preencha todos os campos.")
+            return render_template("registro.html")
+        if not texto_ate(nome, 120):
+            flash("O nome pode ter no máximo 120 caracteres.")
+            return render_template("registro.html")
+        if not email_valido(email):
+            flash("Informe um email válido.")
+            return render_template("registro.html")
+        if not SENHA_MINIMA <= len(senha) <= SENHA_MAXIMA:
+            flash(f"A senha deve ter entre {SENHA_MINIMA} e {SENHA_MAXIMA} caracteres.")
             return render_template("registro.html")
         if Usuario.query.filter_by(email=email).first():
             flash("Já existe uma conta com este email.")

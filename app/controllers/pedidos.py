@@ -13,10 +13,20 @@ from app.extensions import db
 from app.models import Pedido, ItemPedido
 from app.servicos.autenticacao import login_required, usuario_atual
 from app.servicos import carrinho_sessao
+from app.servicos.validacao import texto_ate, cep_valido
 
 pedidos_bp = Blueprint("pedidos", __name__, url_prefix="/pedidos")
 
-CAMPOS_ENTREGA = ["destinatario", "endereco", "numero", "bairro", "cidade", "cep"]
+# Campos obrigatórios da entrega e o tamanho máximo de cada um, igual às colunas do Pedido.
+CAMPOS_ENTREGA = {
+    "destinatario": 120,
+    "endereco": 200,
+    "numero": 20,
+    "bairro": 80,
+    "cidade": 80,
+    "cep": 15,
+}
+OBSERVACAO_MAXIMA = 500
 FORMAS_PAGAMENTO = ["cartao", "pix", "boleto"]
 
 
@@ -36,6 +46,15 @@ def entrega():
         # Todos os campos de endereco sao obrigatorios; a observacao e opcional.
         if any(not dados[campo] for campo in CAMPOS_ENTREGA):
             flash("Preencha todos os dados de entrega.")
+            return render_template("entrega.html", entrega=dados)
+
+        campos_longos = [c for c, limite in CAMPOS_ENTREGA.items() if not texto_ate(dados[c], limite)]
+        if campos_longos or not texto_ate(dados["observacao"], OBSERVACAO_MAXIMA):
+            flash("Algum dado de entrega passou do tamanho permitido. Revise os campos.")
+            return render_template("entrega.html", entrega=dados)
+
+        if not cep_valido(dados["cep"]):
+            flash("Informe um CEP válido, com 8 números.")
             return render_template("entrega.html", entrega=dados)
 
         session["entrega"] = dados

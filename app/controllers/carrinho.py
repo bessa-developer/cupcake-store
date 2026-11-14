@@ -28,6 +28,11 @@ def adicionar(produto_id):
 
 @carrinho_bp.route("/atualizar/<int:produto_id>", methods=["POST"])
 def atualizar(produto_id):
+    # Um id que não existe mais no banco é tirado do carrinho em vez de atualizado.
+    if db.session.get(Produto, produto_id) is None:
+        carrinho_sessao.remover(produto_id)
+        flash("Esse produto não está mais disponível.")
+        return redirect(url_for("carrinho.ver"))
     quantidade = request.form.get("quantidade", 1, type=int)
     carrinho_sessao.atualizar(produto_id, quantidade)
     return redirect(url_for("carrinho.ver"))

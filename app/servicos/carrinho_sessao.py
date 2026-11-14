@@ -7,6 +7,9 @@ from app.models import Produto
 
 CHAVE = "carrinho"
 
+# Limite de unidades por item, o mesmo do campo de quantidade na tela.
+QUANTIDADE_MAXIMA = 99
+
 
 def _obter():
     # O carrinho vive na sessao como um dicionario de produto_id para quantidade.
@@ -21,7 +24,7 @@ def _salvar(carrinho):
 def adicionar(produto_id, quantidade=1):
     carrinho = _obter()
     chave = str(produto_id)
-    carrinho[chave] = carrinho.get(chave, 0) + quantidade
+    carrinho[chave] = min(carrinho.get(chave, 0) + quantidade, QUANTIDADE_MAXIMA)
     if carrinho[chave] < 1:
         carrinho.pop(chave, None)
     _salvar(carrinho)
@@ -34,7 +37,7 @@ def atualizar(produto_id, quantidade):
     if quantidade < 1:
         carrinho.pop(chave, None)
     else:
-        carrinho[chave] = quantidade
+        carrinho[chave] = min(quantidade, QUANTIDADE_MAXIMA)
     _salvar(carrinho)
 
 
