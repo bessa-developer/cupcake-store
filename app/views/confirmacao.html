@@ -12,7 +12,7 @@
       <div class="confirma-selo" aria-hidden="true">{{ m.icone('check', 46) }}</div>
       <h1>Pedido confirmado</h1>
       <p style="color:var(--cacau-suave);max-width:46ch;margin:0 auto 10px;">
-        Já estamos separando tudo. Você acompanha o andamento na página de pedidos.
+        Seu pedido foi registrado e já está em preparo. Você pode acompanhar o andamento em Meus pedidos.
       </p>
       <span class="confirma-pedido-id">Pedido nº <span class="num">{{ pedido.id }}</span></span>
     </div>
@@ -90,7 +90,7 @@
 
     <div class="form-acoes" style="justify-content:center;">
       <a href="{{ url_for('pedidos.meus_pedidos') }}" class="botao botao-primario botao-grande">Ver meus pedidos</a>
-      <a href="{{ url_for('produtos.catalogo') }}" class="botao botao-secundario">Comprar de novo</a>
+      <a href="{{ url_for('produtos.catalogo') }}" class="botao botao-secundario">Continuar comprando</a>
     </div>
   </div>
 {% endblock %}

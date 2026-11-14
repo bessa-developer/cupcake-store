@@ -36,7 +36,7 @@ def novo():
     if request.method == "POST":
         nome, descricao, imagem, disponivel, preco = _ler_formulario()
         if not nome or preco is None:
-            flash("Informe ao menos nome e preco validos.")
+            flash("Informe ao menos nome e preço válidos.")
             return render_template("admin/form.html", produto=None)
 
         produto = Produto(
@@ -64,7 +64,7 @@ def editar(produto_id):
     if request.method == "POST":
         nome, descricao, imagem, disponivel, preco = _ler_formulario()
         if not nome or preco is None:
-            flash("Informe ao menos nome e preco validos.")
+            flash("Informe ao menos nome e preço válidos.")
             return render_template("admin/form.html", produto=produto)
 
         produto.nome = nome

@@ -18,7 +18,7 @@ def adicionar(produto_id):
     # So adiciona produto existente e disponivel.
     produto = db.session.get(Produto, produto_id)
     if produto is None or not produto.disponivel:
-        flash("Produto indisponivel.")
+        flash("Produto indisponível.")
         return redirect(url_for("produtos.catalogo"))
     quantidade = request.form.get("quantidade", 1, type=int)
     servico.adicionar(produto_id, max(quantidade, 1))

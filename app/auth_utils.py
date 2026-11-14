@@ -30,7 +30,7 @@ def caminho_interno_seguro(destino):
 
 def _redirecionar_login():
     # Guarda a pagina pretendida para voltar a ela depois do login.
-    flash("Faca login para continuar.")
+    flash("Faça login para continuar.")
     destino = request.url if request.method == "GET" else request.referrer
     return redirect(url_for("auth.login", next=destino))
 

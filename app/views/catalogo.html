@@ -8,8 +8,8 @@
   <section class="vitrine">
     <div class="vitrine-grade">
       <div class="vitrine-texto">
-        <h1>Um cupcake pra cada tipo de dia</h1>
-        <p>A gente assa de manhã cedo, cobre com capricho e manda pra sua casa ainda no ponto. Escolha os seus e deixe o resto com a gente.</p>
+        <h1>Um cupcake para cada momento do dia</h1>
+        <p>Nossos cupcakes são assados todas as manhãs, finalizados com cuidado e entregues no ponto certo. Escolha seus sabores e nós cuidamos do resto.</p>
         <div class="vitrine-acoes">
           <a href="#vitrine-produtos" class="botao botao-primario botao-grande">Ver os cupcakes</a>
         </div>
@@ -23,7 +23,7 @@
 
   <div class="pagina-topo" id="vitrine-produtos">
     <h2>Nossos cupcakes</h2>
-    <p>Feitos no dia. O que você vê aqui saiu do forno hoje.</p>
+    <p>Produzidos diariamente, com ingredientes selecionados.</p>
   </div>
 
   {% if produtos %}
@@ -45,9 +45,9 @@
             <div class="produto-rodape">
               <span class="preco">{{ m.preco(produto.preco) }}</span>
               {% if produto.disponivel %}
-                <a href="{{ url_for('produtos.detalhe', produto_id=produto.id) }}" class="botao botao-secundario" style="padding:11px 18px;">Quero esse</a>
+                <a href="{{ url_for('produtos.detalhe', produto_id=produto.id) }}" class="botao botao-secundario" style="padding:11px 18px;">Ver detalhes</a>
               {% else %}
-                <span class="selo-estado selo-esgotado">Volta amanhã</span>
+                <span class="selo-estado selo-esgotado">Indisponível</span>
               {% endif %}
             </div>
           </div>
@@ -58,7 +58,7 @@
     <div class="vazio">
       <div class="emblema" aria-hidden="true">{{ m.icone('cupcake', 46) }}</div>
       <h2>A vitrine está sendo montada</h2>
-      <p>Ainda não tem cupcake pra mostrar por aqui. Passa de novo daqui a pouco que a primeira fornada já vem.</p>
+      <p>Ainda não há cupcakes disponíveis. Volte em breve para conhecer a primeira fornada.</p>
     </div>
   {% endif %}
 {% endblock %}

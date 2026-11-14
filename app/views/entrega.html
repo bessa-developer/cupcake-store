@@ -10,16 +10,16 @@
 
   <div class="form-medio">
     <div class="pagina-topo" style="text-align:center;">
-      <h1>Pra onde vão os cupcakes</h1>
-      <p style="margin:0 auto;">Preencha o endereço de entrega. A gente leva até a sua porta.</p>
+      <h1>Endereço de entrega</h1>
+      <p style="margin:0 auto;">Informe onde você deseja receber o seu pedido.</p>
     </div>
 
     <form action="{{ url_for('pedidos.entrega') }}" method="post" class="form-cartao">
       <div class="campo {{ 'campo-erro' if erros.destinatario }}">
-        <label for="destinatario">Quem vai receber <span class="obrigatorio">*</span></label>
+        <label for="destinatario">Destinatário <span class="obrigatorio">*</span></label>
         <input class="entrada" type="text" id="destinatario" name="destinatario"
                value="{{ entrega.destinatario or '' }}" required autocomplete="name"
-               placeholder="Nome de quem recebe na porta">
+               placeholder="Nome de quem vai receber o pedido">
         {% if erros.destinatario %}<div class="mensagem-campo">{{ erros.destinatario }}</div>{% endif %}
       </div>
 
@@ -70,9 +70,9 @@
       </div>
 
       <div class="campo">
-        <label for="observacao">Alguma observação <span class="ajuda">(opcional)</span></label>
+        <label for="observacao">Observação <span class="ajuda">(opcional)</span></label>
         <textarea class="entrada" id="observacao" name="observacao"
-                  placeholder="Ponto de referência, recado pra entrega, horário melhor">{{ entrega.observacao or '' }}</textarea>
+                  placeholder="Ponto de referência ou melhor horário para a entrega">{{ entrega.observacao or '' }}</textarea>
       </div>
 
       <div class="form-acoes">

@@ -7,14 +7,14 @@
   <div class="form-estreito">
     <div class="pagina-topo" style="text-align:center;">
       <h1>Criar sua conta</h1>
-      <p style="margin:0 auto;">É rapidinho. Com a conta você acompanha seus pedidos e fecha a compra mais rápido.</p>
+      <p style="margin:0 auto;">Com uma conta você acompanha seus pedidos e finaliza suas compras com mais agilidade.</p>
     </div>
 
     <form action="{{ url_for('auth.registro') }}" method="post" class="form-cartao">
       <div class="campo">
-        <label for="nome">Seu nome</label>
+        <label for="nome">Nome</label>
         <input class="entrada" type="text" id="nome" name="nome" required autocomplete="name"
-               placeholder="Como podemos te chamar">
+               placeholder="Seu nome completo">
       </div>
 
       <div class="campo">
@@ -27,7 +27,7 @@
         <label for="senha">Senha</label>
         <input class="entrada" type="password" id="senha" name="senha" required autocomplete="new-password"
                minlength="6" placeholder="No mínimo 6 caracteres">
-        <span class="ajuda">Use algo fácil pra você lembrar e difícil pros outros.</span>
+        <span class="ajuda">Escolha uma senha fácil de lembrar e difícil de adivinhar.</span>
       </div>
 
       <div class="form-acoes">

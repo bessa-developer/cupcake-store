@@ -26,7 +26,7 @@ def entrega():
     # Primeira etapa do fechamento. So avanca com carrinho que tem item disponivel.
     disponiveis, _ = servico.itens_disponiveis()
     if not disponiveis:
-        flash("Seu carrinho esta vazio.")
+        flash("Seu carrinho está vazio.")
         return redirect(url_for("carrinho.ver"))
 
     if request.method == "POST":
@@ -55,7 +55,7 @@ def pagamento():
     if request.method == "POST":
         forma = request.form.get("forma_pagamento", "")
         if forma not in FORMAS_PAGAMENTO:
-            flash("Escolha uma forma de pagamento valida.")
+            flash("Escolha uma forma de pagamento válida.")
             return render_template("pagamento.html", formas=FORMAS_PAGAMENTO)
         return _finalizar(forma)
 
@@ -72,7 +72,7 @@ def _finalizar(forma):
         flash(f"{item['produto'].nome} saiu de linha e foi removido do carrinho.")
 
     if not disponiveis:
-        flash("Nenhum item disponivel para finalizar o pedido.")
+        flash("Nenhum item disponível para finalizar o pedido.")
         return redirect(url_for("carrinho.ver"))
 
     entrega = session.get("entrega", {})

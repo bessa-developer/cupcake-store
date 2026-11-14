@@ -18,7 +18,7 @@
 
     <div class="detalhe-info">
       {% if produto.disponivel %}
-        <span class="selo-estado selo-disponivel">Fresquinho, saiu hoje</span>
+        <span class="selo-estado selo-disponivel">Feito hoje</span>
       {% else %}
         <span class="selo-estado selo-esgotado">Esgotado por hoje</span>
       {% endif %}
@@ -30,7 +30,7 @@
       {% if produto.disponivel %}
         <form action="{{ url_for('carrinho.adicionar', produto_id=produto.id) }}" method="post" class="detalhe-compra" data-quantidade>
           <div class="qtd-campo">
-            <label for="quantidade">Quantas unidades</label>
+            <label for="quantidade">Quantidade</label>
             <div class="contador">
               <button type="button" class="menos" aria-label="Diminuir quantidade">−</button>
               <input type="number" id="quantidade" name="quantidade" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantidade">
@@ -41,13 +41,13 @@
         </form>
       {% else %}
         <div class="detalhe-compra">
-          <p style="margin:0;color:var(--cacau-suave);">Esse já foi todo por hoje. Amanhã tem mais, feito na hora.</p>
+          <p style="margin:0;color:var(--cacau-suave);">Este sabor está esgotado no momento. Confira os outros cupcakes disponíveis.</p>
           <a href="{{ url_for('produtos.catalogo') }}" class="botao botao-secundario">Ver outros cupcakes</a>
         </div>
       {% endif %}
 
       <p style="margin-top:22px;">
-        <a href="{{ url_for('produtos.catalogo') }}">Voltar para a vitrine</a>
+        <a href="{{ url_for('produtos.catalogo') }}">Voltar ao catálogo</a>
       </p>
     </div>
   </div>

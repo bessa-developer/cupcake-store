@@ -20,7 +20,7 @@ def registro():
             flash("Preencha todos os campos.")
             return render_template("registro.html")
         if Usuario.query.filter_by(email=email).first():
-            flash("Ja existe uma conta com este email.")
+            flash("Já existe uma conta com este email.")
             return render_template("registro.html")
 
         usuario = Usuario(
@@ -30,7 +30,7 @@ def registro():
         )
         db.session.add(usuario)
         db.session.commit()
-        flash("Conta criada. Faca login para continuar.")
+        flash("Conta criada. Faça login para continuar.")
         return redirect(url_for("auth.login"))
 
     return render_template("registro.html")
@@ -48,7 +48,7 @@ def login():
         # Confere o email e o hash da senha antes de abrir a sessao.
         usuario = Usuario.query.filter_by(email=email).first()
         if usuario is None or not check_password_hash(usuario.senha_hash, senha):
-            flash("Email ou senha invalidos.")
+            flash("Email ou senha inválidos.")
             return render_template("login.html", proximo=proximo)
 
         session["usuario_id"] = usuario.id
@@ -63,5 +63,5 @@ def login():
 @auth_bp.route("/logout", methods=["POST"])
 def logout():
     session.pop("usuario_id", None)
-    flash("Voce saiu da conta.")
+    flash("Você saiu da conta.")
     return redirect(url_for("produtos.catalogo"))

@@ -199,11 +199,13 @@ textarea:focus-visible {
 .nav a:hover { background: var(--morango-suave); text-decoration: none; }
 .nav a.ativo { background: var(--morango-suave); color: var(--morango-escuro); }
 
-.nav .carrinho-link { position: relative; }
+/* O padding à direita reserva o espaço do contador, que fica no canto
+   superior direito do link sem cobrir a palavra Carrinho. */
+.nav .carrinho-link { position: relative; padding-right: 24px; }
 .nav .carrinho-contagem {
   position: absolute;
-  top: 0;
-  right: 2px;
+  top: -2px;
+  right: 0;
   min-width: 19px;
   height: 19px;
   padding: 0 5px;
@@ -403,7 +405,7 @@ textarea:focus-visible {
 /* ---- Grade de produtos --------------------------------------------------- */
 .grade-produtos {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 26px;
 }
 .produto-cartao {
@@ -444,9 +446,10 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 12px;
 }
-.produto-rodape .preco { font-size: 1.3rem; color: var(--cacau); }
+.produto-rodape .preco { font-size: 1.3rem; color: var(--cacau); white-space: nowrap; }
 
 .selo-estado {
   display: inline-flex;
@@ -1001,6 +1004,7 @@ textarea.entrada { resize: vertical; min-height: 92px; }
   }
   .nav.aberto { transform: translateY(0); opacity: 1; pointer-events: auto; }
   .nav a, .nav .link-forma { padding: 13px 14px; font-size: 1.05rem; justify-content: flex-start; }
+  .nav .carrinho-link { padding-right: 14px; }
   .nav .carrinho-contagem { position: static; margin-left: auto; }
   .nav .saudacao { padding: 8px 14px; }
 

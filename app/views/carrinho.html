@@ -62,7 +62,7 @@
         </div>
         <a href="{{ url_for('pedidos.entrega') }}" class="botao botao-primario botao-largo botao-grande">Finalizar pedido</a>
         <div class="continuar">
-          <a href="{{ url_for('produtos.catalogo') }}">Ainda quero ver mais</a>
+          <a href="{{ url_for('produtos.catalogo') }}">Continuar comprando</a>
         </div>
       </aside>
     </div>
@@ -70,7 +70,7 @@
     <div class="vazio">
       <div class="emblema" aria-hidden="true">{{ m.icone('carrinho', 46) }}</div>
       <h2>Seu carrinho ainda está vazio</h2>
-      <p>Que tal começar por um clássico de baunilha? A vitrine está cheia de opções saídas do forno.</p>
+      <p>Confira o catálogo e escolha seus sabores preferidos.</p>
       <a href="{{ url_for('produtos.catalogo') }}" class="botao botao-primario botao-grande">Escolher cupcakes</a>
     </div>
   {% endif %}
