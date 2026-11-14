@@ -1,31 +1,96 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% set ativo = "pedidos" %}
 
-{# Template casca provisorio. O front sera desenvolvido depois. #}
-
-{% block titulo %}Pedido confirmado{% endblock %}
+{% block titulo %}Pedido confirmado · Dona Baunilha{% endblock %}
 
 {% block conteudo %}
-<h1>Pedido confirmado</h1>
-<p>Pedido {{ pedido.id }} - {{ pedido.status }}</p>
+  {{ m.passos(3) }}
 
-<h2>Entrega</h2>
-<p>{{ pedido.destinatario }}</p>
-<p>{{ pedido.endereco }}, {{ pedido.numero }} - {{ pedido.bairro }}</p>
-<p>{{ pedido.cidade }} - {{ pedido.cep }}</p>
-{% if pedido.observacao %}
-  <p>Observacao: {{ pedido.observacao }}</p>
-{% endif %}
+  <div class="form-medio">
+    <div class="confirma-topo">
+      <div class="confirma-selo" aria-hidden="true">{{ m.icone('check', 46) }}</div>
+      <h1>Pedido confirmado</h1>
+      <p style="color:var(--cacau-suave);max-width:46ch;margin:0 auto 10px;">
+        Já estamos separando tudo. Você acompanha o andamento na página de pedidos.
+      </p>
+      <span class="confirma-pedido-id">Pedido nº <span class="num">{{ pedido.id }}</span></span>
+    </div>
 
-<h2>Pagamento</h2>
-<p>Forma: {{ pedido.forma_pagamento }}</p>
+    <div class="painel">
+      <h2><span class="ponto" aria-hidden="true"></span> Status</h2>
+      {{ m.status_selo(pedido.status) }}
+    </div>
 
-<h2>Itens</h2>
-<ul>
-  {% for item in pedido.itens %}
-    <li>{{ item.quantidade }}x {{ item.produto.nome }} - R$ {{ item.preco_unitario }}</li>
-  {% endfor %}
-</ul>
+    <div class="painel">
+      <h2><span class="ponto" aria-hidden="true"></span> Entrega</h2>
+      <div class="dados-entrega">
+        <div class="dado-linha">
+          <span class="rotulo">Quem recebe</span>
+          <span class="valor">{{ pedido.destinatario }}</span>
+        </div>
+        <div class="dado-linha">
+          <span class="rotulo">Endereço</span>
+          <span class="valor">{{ pedido.endereco }}, {{ pedido.numero }}</span>
+        </div>
+        <div class="dado-linha">
+          <span class="rotulo">Bairro</span>
+          <span class="valor">{{ pedido.bairro }}</span>
+        </div>
+        <div class="dado-linha">
+          <span class="rotulo">Cidade</span>
+          <span class="valor">{{ pedido.cidade }}</span>
+        </div>
+        <div class="dado-linha">
+          <span class="rotulo">CEP</span>
+          <span class="valor">{{ pedido.cep }}</span>
+        </div>
+        {% if pedido.observacao %}
+          <div class="dado-linha dado-span">
+            <span class="rotulo">Observação</span>
+            <span class="valor">{{ pedido.observacao }}</span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
 
-<p><a href="{{ url_for('pedidos.meus_pedidos') }}">Ver meus pedidos</a></p>
-<p><a href="{{ url_for('produtos.catalogo') }}">Voltar ao catalogo</a></p>
+    <div class="painel">
+      <h2><span class="ponto" aria-hidden="true"></span> Pagamento</h2>
+      <div class="forma" style="cursor:default;background:var(--superficie-2);">
+        <span class="icone-forma" aria-hidden="true">{{ m.forma_icone(pedido.forma_pagamento) }}</span>
+        <span class="forma-texto">
+          <strong>{{ m.forma_nome(pedido.forma_pagamento) }}</strong>
+          <span>Pagamento de simulação, nada foi cobrado.</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="painel">
+      <h2><span class="ponto" aria-hidden="true"></span> Seus cupcakes</h2>
+      <div class="itens-pedido">
+        {% set ns = namespace(total=0) %}
+        {% for item in pedido.itens %}
+          {% set linha = item.quantidade * item.preco_unitario %}
+          {% set ns.total = ns.total + linha %}
+          <div class="item-pedido">
+            <div class="item-pedido-nome">
+              {{ item.produto.nome if item.produto.nome is defined else item.produto }}
+              <span class="mult">× <span class="num">{{ item.quantidade }}</span></span>
+            </div>
+            <div class="item-pedido-unit">{{ m.preco(item.preco_unitario) }} cada</div>
+            <div class="item-pedido-total preco">{{ m.preco(linha) }}</div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="pedido-total-geral">
+        <span>Total</span>
+        <span class="total-valor">{{ m.preco(ns.total) }}</span>
+      </div>
+    </div>
+
+    <div class="form-acoes" style="justify-content:center;">
+      <a href="{{ url_for('pedidos.meus_pedidos') }}" class="botao botao-primario botao-grande">Ver meus pedidos</a>
+      <a href="{{ url_for('produtos.catalogo') }}" class="botao botao-secundario">Comprar de novo</a>
+    </div>
+  </div>
 {% endblock %}

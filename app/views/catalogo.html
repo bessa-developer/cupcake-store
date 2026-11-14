@@ -1,41 +1,64 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% set ativo = "catalogo" %}
 
-{# Template casca provisorio. O front sera desenvolvido depois. #}
-
-{% block titulo %}Catalogo{% endblock %}
+{% block titulo %}Cupcakes · Dona Baunilha{% endblock %}
 
 {% block conteudo %}
-<nav>
-  {% if usuario_atual %}
-    <span>Ola, {{ usuario_atual.nome }}</span>
-    <a href="{{ url_for('pedidos.meus_pedidos') }}">Meus pedidos</a>
-    {% if usuario_atual.is_admin %}
-      <a href="{{ url_for('admin.lista') }}">Admin</a>
-    {% endif %}
-    <form action="{{ url_for('auth.logout') }}" method="post">
-      <button type="submit">Sair</button>
-    </form>
-  {% else %}
-    <a href="{{ url_for('auth.login') }}">Entrar</a>
-    <a href="{{ url_for('auth.registro') }}">Criar conta</a>
-  {% endif %}
-  <a href="{{ url_for('carrinho.ver') }}">Carrinho</a>
-</nav>
+  <section class="vitrine">
+    <div class="vitrine-grade">
+      <div class="vitrine-texto">
+        <h1>Um cupcake pra cada tipo de dia</h1>
+        <p>A gente assa de manhã cedo, cobre com capricho e manda pra sua casa ainda no ponto. Escolha os seus e deixe o resto com a gente.</p>
+        <div class="vitrine-acoes">
+          <a href="#vitrine-produtos" class="botao botao-primario botao-grande">Ver os cupcakes</a>
+        </div>
+      </div>
+      <div class="vitrine-foto">
+        <img src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?auto=format&fit=crop&w=1100&q=80"
+             alt="Cupcakes com cobertura colorida e confeitos">
+      </div>
+    </div>
+  </section>
 
-<h1>Cupcakes</h1>
-{% if produtos %}
-  <ul>
-    {% for produto in produtos %}
-      <li>
-        <a href="{{ url_for('produtos.detalhe', produto_id=produto.id) }}">{{ produto.nome }}</a>
-        R$ {{ produto.preco }}
-        <form action="{{ url_for('carrinho.adicionar', produto_id=produto.id) }}" method="post">
-          <button type="submit">Adicionar</button>
-        </form>
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>Nenhum cupcake disponivel no momento.</p>
-{% endif %}
+  <div class="pagina-topo" id="vitrine-produtos">
+    <h2>Nossos cupcakes</h2>
+    <p>Feitos no dia. O que você vê aqui saiu do forno hoje.</p>
+  </div>
+
+  {% if produtos %}
+    <div class="grade-produtos">
+      {% for produto in produtos %}
+        <article class="produto-cartao">
+          <div class="produto-foto">
+            <a href="{{ url_for('produtos.detalhe', produto_id=produto.id) }}" aria-label="Ver {{ produto.nome }}">
+              <img src="{{ m.foto_produto(produto) }}" alt="{{ produto.nome }}" loading="lazy">
+            </a>
+            {% if not produto.disponivel %}
+              <div class="tampa-esgotado" aria-hidden="true"></div>
+              <span class="selo-estado selo-esgotado selo-flutua">Esgotado por hoje</span>
+            {% endif %}
+          </div>
+          <div class="produto-corpo">
+            <h3><a href="{{ url_for('produtos.detalhe', produto_id=produto.id) }}">{{ produto.nome }}</a></h3>
+            <p class="produto-desc">{{ produto.descricao }}</p>
+            <div class="produto-rodape">
+              <span class="preco">{{ m.preco(produto.preco) }}</span>
+              {% if produto.disponivel %}
+                <a href="{{ url_for('produtos.detalhe', produto_id=produto.id) }}" class="botao botao-secundario" style="padding:11px 18px;">Quero esse</a>
+              {% else %}
+                <span class="selo-estado selo-esgotado">Volta amanhã</span>
+              {% endif %}
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="vazio">
+      <div class="emblema" aria-hidden="true">{{ m.icone('cupcake', 46) }}</div>
+      <h2>A vitrine está sendo montada</h2>
+      <p>Ainda não tem cupcake pra mostrar por aqui. Passa de novo daqui a pouco que a primeira fornada já vem.</p>
+    </div>
+  {% endif %}
 {% endblock %}

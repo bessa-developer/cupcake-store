@@ -1,35 +1,84 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% set ativo = "carrinho" %}
+{% set erros = erros if erros is defined else {} %}
 
-{# Template casca provisorio. O front sera desenvolvido depois. #}
-
-{% block titulo %}Entrega{% endblock %}
+{% block titulo %}Entrega · Dona Baunilha{% endblock %}
 
 {% block conteudo %}
-<p><a href="{{ url_for('carrinho.ver') }}">Voltar ao carrinho</a></p>
+  {{ m.passos(1) }}
 
-<h1>Dados de entrega</h1>
-<form method="post">
-  <label>Destinatario
-    <input type="text" name="destinatario" value="{{ entrega.destinatario or '' }}">
-  </label>
-  <label>Endereco
-    <input type="text" name="endereco" value="{{ entrega.endereco or '' }}">
-  </label>
-  <label>Numero
-    <input type="text" name="numero" value="{{ entrega.numero or '' }}">
-  </label>
-  <label>Bairro
-    <input type="text" name="bairro" value="{{ entrega.bairro or '' }}">
-  </label>
-  <label>Cidade
-    <input type="text" name="cidade" value="{{ entrega.cidade or '' }}">
-  </label>
-  <label>CEP
-    <input type="text" name="cep" value="{{ entrega.cep or '' }}">
-  </label>
-  <label>Observacao
-    <textarea name="observacao">{{ entrega.observacao or '' }}</textarea>
-  </label>
-  <button type="submit">Ir para o pagamento</button>
-</form>
+  <div class="form-medio">
+    <div class="pagina-topo" style="text-align:center;">
+      <h1>Pra onde vão os cupcakes</h1>
+      <p style="margin:0 auto;">Preencha o endereço de entrega. A gente leva até a sua porta.</p>
+    </div>
+
+    <form action="{{ url_for('pedidos.entrega') }}" method="post" class="form-cartao">
+      <div class="campo {{ 'campo-erro' if erros.destinatario }}">
+        <label for="destinatario">Quem vai receber <span class="obrigatorio">*</span></label>
+        <input class="entrada" type="text" id="destinatario" name="destinatario"
+               value="{{ entrega.destinatario or '' }}" required autocomplete="name"
+               placeholder="Nome de quem recebe na porta">
+        {% if erros.destinatario %}<div class="mensagem-campo">{{ erros.destinatario }}</div>{% endif %}
+      </div>
+
+      <div class="form-grade-2" style="grid-template-columns: 2.4fr 1fr;">
+        <div class="campo">
+          <label for="endereco">Endereço <span class="obrigatorio">*</span></label>
+          <input class="entrada" type="text" id="endereco" name="endereco"
+                 value="{{ entrega.endereco or '' }}" required autocomplete="street-address"
+                 placeholder="Rua, avenida, travessa">
+          {% if erros.endereco %}<div class="mensagem-campo">{{ erros.endereco }}</div>{% endif %}
+        </div>
+
+        <div class="campo">
+          <label for="numero">Número <span class="obrigatorio">*</span></label>
+          <input class="entrada" type="text" id="numero" name="numero"
+                 value="{{ entrega.numero or '' }}" required
+                 placeholder="123">
+          {% if erros.numero %}<div class="mensagem-campo">{{ erros.numero }}</div>{% endif %}
+        </div>
+      </div>
+
+      <div class="form-grade-2">
+        <div class="campo">
+          <label for="bairro">Bairro <span class="obrigatorio">*</span></label>
+          <input class="entrada" type="text" id="bairro" name="bairro"
+                 value="{{ entrega.bairro or '' }}" required
+                 placeholder="Seu bairro">
+          {% if erros.bairro %}<div class="mensagem-campo">{{ erros.bairro }}</div>{% endif %}
+        </div>
+
+        <div class="campo">
+          <label for="cidade">Cidade <span class="obrigatorio">*</span></label>
+          <input class="entrada" type="text" id="cidade" name="cidade"
+                 value="{{ entrega.cidade or '' }}" required autocomplete="address-level2"
+                 placeholder="Sua cidade">
+          {% if erros.cidade %}<div class="mensagem-campo">{{ erros.cidade }}</div>{% endif %}
+        </div>
+      </div>
+
+      <div class="form-grade-2">
+        <div class="campo">
+          <label for="cep">CEP <span class="obrigatorio">*</span></label>
+          <input class="entrada" type="text" id="cep" name="cep"
+                 value="{{ entrega.cep or '' }}" required inputmode="numeric" autocomplete="postal-code"
+                 placeholder="00000-000">
+          {% if erros.cep %}<div class="mensagem-campo">{{ erros.cep }}</div>{% endif %}
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="observacao">Alguma observação <span class="ajuda">(opcional)</span></label>
+        <textarea class="entrada" id="observacao" name="observacao"
+                  placeholder="Ponto de referência, recado pra entrega, horário melhor">{{ entrega.observacao or '' }}</textarea>
+      </div>
+
+      <div class="form-acoes">
+        <button type="submit" class="botao botao-primario botao-grande">Ir para o pagamento</button>
+        <a href="{{ url_for('carrinho.ver') }}" class="botao botao-fantasma">Voltar ao carrinho</a>
+      </div>
+    </form>
+  </div>
 {% endblock %}

@@ -1,28 +1,123 @@
-<!doctype html>
+{% import "_macros.html" as m %}
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block titulo %}Loja de Cupcakes{% endblock %}</title>
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet">
+  <title>{% block titulo %}Dona Baunilha{% endblock %}</title>
+  <meta name="description" content="Dona Baunilha, confeitaria de cupcakes feitos à mão todo dia.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23CE4470' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'><path d='M6 10.5h12l-1.2 8a1.4 1.4 0 0 1-1.4 1.2H8.6a1.4 1.4 0 0 1-1.4-1.2Z'/><path d='M6.4 10.5a5.6 5.6 0 0 1 11.2 0'/><circle cx='12' cy='4.2' r='1.3'/></svg>">
+  {% block cabeca_extra %}{% endblock %}
 </head>
 <body>
-  {% with mensagens = get_flashed_messages() %}
-    {% if mensagens %}
-      <ul>
-        {% for mensagem in mensagens %}
-          <li>{{ mensagem }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
+  <a class="pular-link" href="#conteudo">Pular para o conteúdo</a>
 
-  {% block conteudo %}{% endblock %}
+  <header class="cabecalho">
+    <div class="container cabecalho-interno">
+      <a class="marca" href="{{ url_for('produtos.catalogo') }}">
+        <span class="selo" aria-hidden="true">{{ m.icone('cupcake', 22) }}</span>
+        <span>Dona <b>Baunilha</b></span>
+      </a>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+      <button class="menu-botao" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-principal">
+        <span></span>
+      </button>
+
+      <nav class="nav" id="nav-principal" aria-label="Navegação principal">
+        <a href="{{ url_for('produtos.catalogo') }}" class="{{ 'ativo' if ativo == 'catalogo' }}">Cupcakes</a>
+
+        <a href="{{ url_for('carrinho.ver') }}" class="carrinho-link {{ 'ativo' if ativo == 'carrinho' }}">
+          Carrinho
+          {% if total_itens_carrinho %}<span class="carrinho-contagem" aria-label="{{ total_itens_carrinho }} itens no carrinho">{{ total_itens_carrinho }}</span>{% endif %}
+        </a>
+
+        {% if usuario_atual %}
+          <a href="{{ url_for('pedidos.meus_pedidos') }}" class="{{ 'ativo' if ativo == 'pedidos' }}">Meus pedidos</a>
+          {% if usuario_atual.is_admin %}
+            <a href="{{ url_for('admin.lista') }}" class="selo-admin {{ 'ativo' if ativo == 'admin' }}">Admin</a>
+          {% endif %}
+          <span class="saudacao">Olá, {{ usuario_atual.nome.split(' ')[0] }}</span>
+          <form action="{{ url_for('auth.logout') }}" method="post" style="margin:0;">
+            <button type="submit" class="link-forma">Sair</button>
+          </form>
+        {% else %}
+          <a href="{{ url_for('auth.login') }}" class="{{ 'ativo' if ativo == 'login' }}">Entrar</a>
+          <a href="{{ url_for('auth.registro') }}" class="botao botao-primario" style="padding:9px 18px;">Criar conta</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+      {% if mensagens %}
+        <div class="mensagens" role="status" aria-live="polite">
+          {% for categoria, texto in mensagens %}
+            <div class="mensagem mensagem-{{ categoria or 'info' }}">
+              <span class="icone" aria-hidden="true">
+                {%- if categoria in ['sucesso', 'success'] -%}{{ m.icone('check', 15) }}
+                {%- elif categoria in ['erro', 'danger', 'error', 'aviso', 'warning'] -%}{{ m.icone('alerta', 15) }}
+                {%- else -%}{{ m.icone('info', 15) }}{%- endif -%}
+              </span>
+              <span>{{ texto }}</span>
+              <button type="button" class="fechar" aria-label="Fechar mensagem">&times;</button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <main id="conteudo">
+    <div class="container">
+      {% block conteudo %}{% endblock %}
+    </div>
+  </main>
+
+  <footer class="rodape">
+    <div class="container">
+      <div class="rodape-interno">
+        <div class="rodape-sobre-col">
+          <a class="marca" href="{{ url_for('produtos.catalogo') }}">
+            <span class="selo" aria-hidden="true">{{ m.icone('cupcake', 22) }}</span>
+            <span>Dona <b>Baunilha</b></span>
+          </a>
+          <p class="rodape-sobre">Cupcakes assados à mão todo dia, com massa fofa e cobertura na medida. Do nosso forno para a sua mesa.</p>
+        </div>
+        <div>
+          <h4>A loja</h4>
+          <ul>
+            <li><a href="{{ url_for('produtos.catalogo') }}">Cupcakes</a></li>
+            <li><a href="{{ url_for('carrinho.ver') }}">Carrinho</a></li>
+            {% if usuario_atual %}
+              <li><a href="{{ url_for('pedidos.meus_pedidos') }}">Meus pedidos</a></li>
+            {% else %}
+              <li><a href="{{ url_for('auth.registro') }}">Criar conta</a></li>
+            {% endif %}
+          </ul>
+        </div>
+        <div>
+          <h4>Fica perto</h4>
+          <ul>
+            <li>Todo dia, das 9h às 19h</li>
+            <li>Entrega na sua casa</li>
+            <li>oi@donabaunilha.com.br</li>
+          </ul>
+        </div>
+      </div>
+      <div class="rodape-base">
+        <span>© 2026 Dona Baunilha</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+  {% block script_extra %}{% endblock %}
 </body>
 </html>
