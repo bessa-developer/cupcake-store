@@ -33,9 +33,10 @@ da escolha, sem integração com gateway real.
 
 ## Tecnologias
 
-- Python 3 com Flask, em arquitetura MVC
+- Python 3.12 com Flask, em arquitetura MVC
 - SQLAlchemy sobre PostgreSQL hospedado no Neon
-- HTML, CSS, JavaScript e Bootstrap 5 no frontend
+- Flask-WTF para a proteção CSRF dos formulários
+- HTML com templates Jinja2, CSS próprio e JavaScript no frontend, sem framework visual
 - pytest para os testes
 - Hospedagem na Vercel
 
@@ -46,6 +47,7 @@ app/
   controllers/   rotas e blueprints
   models/        classes do banco (Produto, Usuario, Pedido, ItemPedido)
   views/         templates HTML
+  servicos/      autenticação, carrinho na sessão e validação dos dados
 static/          css e js
 tests/           testes com pytest
 api/             ponto de entrada para a Vercel
@@ -53,6 +55,8 @@ app.py           execução local
 config.py        configurações e variáveis de ambiente
 init_db.py       cria as tabelas e popula o catálogo de exemplo
 migrar_pedido.py adiciona as colunas de entrega e pagamento a um banco já existente
+requirements.txt      dependências da aplicação
+requirements-dev.txt  dependências da aplicação mais as de teste
 ```
 
 ## Como rodar localmente
@@ -64,16 +68,16 @@ migrar_pedido.py adiciona as colunas de entrega e pagamento a um banco já exist
    venv\Scripts\activate
    ```
 
-2. Instale as dependências.
+2. Instale as dependências. O arquivo de desenvolvimento já inclui o pytest.
 
    ```
-   pip install -r requirements.txt
+   pip install -r requirements-dev.txt
    ```
 
 3. A connection string do PostgreSQL fica no `.env.local`, gerado pela Neon com
    `neon init`. Para as demais variáveis, copie `.env.example` para `.env` e preencha
-   a `SECRET_KEY`, usada pela sessão do Flask. Sem a `DATABASE_URL`, o app usa um
-   SQLite em memória para subir durante o desenvolvimento.
+   a `SECRET_KEY`, usada pela sessão do Flask. A `DATABASE_URL` é obrigatória e,
+   sem ela, o app não sobe e avisa qual variável falta.
 
 4. Crie as tabelas e popule o catálogo de exemplo.
 
@@ -91,6 +95,18 @@ migrar_pedido.py adiciona as colunas de entrega e pagamento a um banco já exist
 
 ## Testes
 
+Os testes usam um SQLite em memória e nunca tocam no banco do Neon.
+
 ```
 pytest
 ```
+
+## Deploy na Vercel
+
+A Vercel instala apenas o `requirements.txt` e usa o `api/index.py` como ponto de
+entrada. Antes do deploy, configure no painel do projeto duas variáveis de ambiente.
+
+- `DATABASE_URL`, com a connection string do Neon. A integração do Neon com a Vercel
+  pode criar essa variável automaticamente.
+- `SECRET_KEY`, com uma chave longa e aleatória. Em produção o app não sobe sem ela
+  nem com o valor de desenvolvimento.
