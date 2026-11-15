@@ -919,9 +919,12 @@ textarea.entrada { resize: vertical; min-height: 92px; }
 .acao-remover { color: var(--aviso); border-color: var(--aviso-suave); }
 .acao-remover:hover { background: var(--aviso-suave); }
 
-.switch-campo {
+.campo > label.switch-campo {
   display: flex; align-items: center; gap: 14px;
+  margin-bottom: 0;
   padding: 16px 18px;
+  font-weight: 500;
+  cursor: pointer;
   background: var(--superficie-2);
   border: 1px solid var(--borda);
   border-radius: var(--r-medio);
