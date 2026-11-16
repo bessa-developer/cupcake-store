@@ -228,6 +228,18 @@ textarea:focus-visible {
 .nav .botao-nav { padding: 9px 18px; }
 .form-sair { margin: 0; }
 
+/* A saudação e o botão de sair ficam num grupo à parte, separados dos links
+   do menu por uma divisória, para não competir com a navegação. */
+.nav .usuario {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+  padding-left: 14px;
+  border-left: 1px solid var(--borda);
+}
+.nav .usuario .saudacao { padding-left: 0; }
+
 .menu-botao {
   display: none;
   margin-left: auto;
@@ -1024,6 +1036,8 @@ textarea.entrada { resize: vertical; min-height: 92px; }
   .nav .carrinho-link { padding-right: 14px; }
   .nav .carrinho-contagem { position: static; margin-left: auto; }
   .nav .saudacao { padding: 8px 14px; }
+  /* No menu vertical do celular o grupo ocupa a largura toda, sem a divisória. */
+  .nav .usuario { width: 100%; margin-left: 0; padding-left: 0; border-left: none; justify-content: space-between; }
 
   .form-grade-2 { grid-template-columns: 1fr; }
   .dados-entrega { grid-template-columns: 1fr; }

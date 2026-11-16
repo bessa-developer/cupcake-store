@@ -42,11 +42,13 @@
           {% if usuario_atual.is_admin %}
             <a href="{{ url_for('admin.lista') }}" class="selo-admin {{ 'ativo' if ativo == 'admin' }}">Admin</a>
           {% endif %}
-          <span class="saudacao">Olá, {{ usuario_atual.nome.split(' ')[0] }}</span>
-          <form action="{{ url_for('auth.logout') }}" method="post" class="form-sair">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <button type="submit" class="link-forma">Sair</button>
-          </form>
+          <div class="usuario">
+            <span class="saudacao">Olá, {{ usuario_atual.nome.split(' ')[0] }}</span>
+            <form action="{{ url_for('auth.logout') }}" method="post" class="form-sair">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="link-forma">Sair</button>
+            </form>
+          </div>
         {% else %}
           <a href="{{ url_for('auth.login') }}" class="{{ 'ativo' if ativo == 'login' }}">Entrar</a>
           <a href="{{ url_for('auth.registro') }}" class="botao botao-primario botao-nav">Criar conta</a>
