@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m %}
 {% set ativo = "registro" %}
 
 {% block titulo %}Criar conta · Dona Baunilha{% endblock %}
@@ -26,8 +27,15 @@
 
       <div class="campo">
         <label for="senha">Senha</label>
-        <input class="entrada" type="password" id="senha" name="senha" required autocomplete="new-password"
-               minlength="6" placeholder="No mínimo 6 caracteres">
+        <div class="campo-senha">
+          <input class="entrada" type="password" id="senha" name="senha" required autocomplete="new-password"
+                 minlength="6" placeholder="No mínimo 6 caracteres">
+          <button type="button" class="ver-senha" data-ver-senha="senha" aria-controls="senha"
+                  aria-pressed="false" aria-label="Mostrar senha">
+            <span class="ver-senha-mostrar">{{ m.icone('olho', 18) }}</span>
+            <span class="ver-senha-ocultar">{{ m.icone('olho-corte', 18) }}</span>
+          </button>
+        </div>
         <span class="ajuda">Escolha uma senha fácil de lembrar e difícil de adivinhar.</span>
       </div>
 

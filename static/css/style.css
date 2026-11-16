@@ -693,6 +693,28 @@ textarea:focus-visible {
 .campo .obrigatorio { color: var(--morango); }
 .campo .ajuda { color: var(--cacau-suave); font-size: 0.88rem; font-weight: 400; }
 
+/* Botão de mostrar ou esconder a senha, dentro do próprio campo. */
+.campo-senha { position: relative; }
+.campo-senha .entrada { padding-right: 46px; }
+.ver-senha {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 44px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--cacau-suave);
+}
+.ver-senha:hover { color: var(--cacau); }
+.ver-senha:focus-visible { outline: 3px solid var(--manteiga); outline-offset: -3px; border-radius: var(--r-medio); }
+.ver-senha .ver-senha-ocultar { display: none; }
+.ver-senha.ativo .ver-senha-mostrar { display: none; }
+.ver-senha.ativo .ver-senha-ocultar { display: inline-flex; }
+
 .entrada {
   width: 100%;
   padding: 13px 16px;

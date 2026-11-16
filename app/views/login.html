@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_macros.html" as m %}
 {% set ativo = "login" %}
 
 {% block titulo %}Entrar · Dona Baunilha{% endblock %}
@@ -22,8 +23,15 @@
 
       <div class="campo">
         <label for="senha">Senha</label>
-        <input class="entrada" type="password" id="senha" name="senha" required autocomplete="current-password"
-               placeholder="Sua senha">
+        <div class="campo-senha">
+          <input class="entrada" type="password" id="senha" name="senha" required autocomplete="current-password"
+                 placeholder="Sua senha">
+          <button type="button" class="ver-senha" data-ver-senha="senha" aria-controls="senha"
+                  aria-pressed="false" aria-label="Mostrar senha">
+            <span class="ver-senha-mostrar">{{ m.icone('olho', 18) }}</span>
+            <span class="ver-senha-ocultar">{{ m.icone('olho-corte', 18) }}</span>
+          </button>
+        </div>
       </div>
 
       <div class="form-acoes">

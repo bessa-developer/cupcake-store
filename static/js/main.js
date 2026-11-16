@@ -54,6 +54,19 @@
     }, 5000 + i * 600);
   });
 
+  /* Mostrar ou esconder a senha nos formulários de login e cadastro */
+  document.querySelectorAll('[data-ver-senha]').forEach(function (botao) {
+    var campo = document.getElementById(botao.getAttribute('data-ver-senha'));
+    if (!campo) return;
+    botao.addEventListener('click', function () {
+      var mostrando = campo.type === 'text';
+      campo.type = mostrando ? 'password' : 'text';
+      botao.classList.toggle('ativo', !mostrando);
+      botao.setAttribute('aria-pressed', mostrando ? 'false' : 'true');
+      botao.setAttribute('aria-label', mostrando ? 'Mostrar senha' : 'Ocultar senha');
+    });
+  });
+
   /* Seletores de quantidade */
   document.querySelectorAll('[data-quantidade]').forEach(function (form) {
     var entrada = form.querySelector('input[name="quantidade"]');
