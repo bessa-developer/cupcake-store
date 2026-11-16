@@ -67,6 +67,16 @@
     });
   });
 
+  /* Máscara de CEP, no formato 00000-000, limitando a oito dígitos */
+  document.querySelectorAll('[data-cep]').forEach(function (campo) {
+    function formata() {
+      var digitos = campo.value.replace(/\D/g, '').slice(0, 8);
+      campo.value = digitos.length > 5 ? digitos.slice(0, 5) + '-' + digitos.slice(5) : digitos;
+    }
+    campo.addEventListener('input', formata);
+    formata();
+  });
+
   /* Seletores de quantidade */
   document.querySelectorAll('[data-quantidade]').forEach(function (form) {
     var entrada = form.querySelector('input[name="quantidade"]');

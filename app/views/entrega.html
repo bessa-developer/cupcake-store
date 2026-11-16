@@ -65,7 +65,7 @@
           <label for="cep">CEP <span class="obrigatorio">*</span></label>
           <input class="entrada" type="text" id="cep" name="cep"
                  value="{{ entrega.cep or '' }}" required inputmode="numeric" autocomplete="postal-code"
-                 placeholder="00000-000">
+                 maxlength="9" pattern="\d{5}-?\d{3}" data-cep placeholder="00000-000">
           {% if erros.cep %}<div class="mensagem-campo">{{ erros.cep }}</div>{% endif %}
         </div>
       </div>
