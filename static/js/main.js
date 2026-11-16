@@ -32,15 +32,26 @@
   }
 
   /* Fechar mensagens de retorno */
+  function someMensagem(msg) {
+    msg.style.transition = 'opacity .18s ease, transform .18s ease';
+    msg.style.opacity = '0';
+    msg.style.transform = 'translateY(-6px)';
+    setTimeout(function () { msg.remove(); }, 180);
+  }
+
   document.addEventListener('click', function (e) {
     var fechar = e.target.closest('.mensagem .fechar');
     if (fechar) {
-      var msg = fechar.closest('.mensagem');
-      msg.style.transition = 'opacity .18s ease, transform .18s ease';
-      msg.style.opacity = '0';
-      msg.style.transform = 'translateY(-6px)';
-      setTimeout(function () { msg.remove(); }, 180);
+      someMensagem(fechar.closest('.mensagem'));
     }
+  });
+
+  /* As mensagens também desaparecem sozinhas depois de alguns segundos,
+     sem tirar o botão de fechar, que continua funcionando na hora. */
+  document.querySelectorAll('.mensagem').forEach(function (msg, i) {
+    setTimeout(function () {
+      if (msg.isConnected) someMensagem(msg);
+    }, 5000 + i * 600);
   });
 
   /* Seletores de quantidade */
