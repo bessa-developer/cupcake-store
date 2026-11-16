@@ -43,8 +43,10 @@ def registro():
         )
         db.session.add(usuario)
         db.session.commit()
-        flash("Conta criada. Faça login para continuar.")
-        return redirect(url_for("auth.login"))
+        # O cadastro já abre a sessão e leva a pessoa logada ao catálogo.
+        session["usuario_id"] = usuario.id
+        flash("Conta criada com sucesso.")
+        return redirect(url_for("produtos.catalogo"))
 
     return render_template("registro.html")
 

@@ -47,7 +47,7 @@ def test_catalogo_lista_produto_disponivel(client, produto):
 
 
 def test_registro_cria_usuario_com_hash(client):
-    client.post(
+    resposta = client.post(
         "/registro",
         data={"nome": "Novo", "email": "novo@exemplo.com", "senha": "segredo"},
     )
@@ -55,6 +55,11 @@ def test_registro_cria_usuario_com_hash(client):
     assert usuario is not None
     # A senha nunca fica em texto puro no banco.
     assert usuario.senha_hash != "segredo"
+    # O cadastro já deixa a pessoa logada e a leva ao catálogo.
+    assert resposta.status_code == 302
+    assert "/produtos" in resposta.headers["Location"]
+    with client.session_transaction() as sessao:
+        assert sessao.get("usuario_id") == usuario.id
 
 
 def test_login_valido_abre_sessao(client, usuario, login):
